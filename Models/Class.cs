@@ -7,7 +7,7 @@ namespace FitnessProject.Models
     public class Class
     {
         [Key]
-        public int WeddingId { get; set; }
+        public int ClassId { get; set; }
         [Required]
         [Display(Name = "Class Name")]
         public string ClassName { get; set; }
@@ -24,19 +24,21 @@ namespace FitnessProject.Models
 
         [Required]
         [DataType(DataType.Time)]
-        [Display(Name = "Time")]
-        public DateTime ClassTime { get; set; }
+        [Display(Name = "Start Time")]
+        public DateTime StartTime { get; set; }
 
         [Required]
-        public int Duration { get; set; }
-
-        [Required]
-        [Display(Name = "Duration Type")]
-        public string DurationType { get; set; }
+        [DataType(DataType.Time)]
+        [Display(Name = "End Time")]
+        public DateTime EndTime { get; set; }
 
         [Required]
         [Display(Name = "Location")]
         public string Location { get; set; }
+
+        [Required]
+        [Display(Name = "Max # of People")]
+        public int ClassSize { get; set; }
 
         public DateTime CreatedAt { get; set; } = DateTime.Now;
         public DateTime UpdatedAt { get; set; } = DateTime.Now;

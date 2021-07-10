@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FitnessProject.Migrations
 {
     [DbContext(typeof(MyContext))]
-    [Migration("20210709071511_FirstMigration")]
-    partial class FirstMigration
+    [Migration("20210709105041_AddClassSize")]
+    partial class AddClassSize
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -21,7 +21,7 @@ namespace FitnessProject.Migrations
 
             modelBuilder.Entity("FitnessProject.Models.Class", b =>
                 {
-                    b.Property<int>("WeddingId")
+                    b.Property<int>("ClassId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
@@ -35,6 +35,9 @@ namespace FitnessProject.Migrations
                     b.Property<string>("ClassName")
                         .IsRequired()
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<int>("ClassSize")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("ClassTime")
                         .HasColumnType("datetime(6)");
@@ -59,7 +62,7 @@ namespace FitnessProject.Migrations
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
-                    b.HasKey("WeddingId");
+                    b.HasKey("ClassId");
 
                     b.HasIndex("UserId");
 

@@ -30,7 +30,7 @@ namespace FitnessProject.Migrations
                 name: "Classes",
                 columns: table => new
                 {
-                    WeddingId = table.Column<int>(nullable: false)
+                    ClassId = table.Column<int>(nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     ClassName = table.Column<string>(nullable: false),
                     ClassDescription = table.Column<string>(nullable: false),
@@ -45,7 +45,7 @@ namespace FitnessProject.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Classes", x => x.WeddingId);
+                    table.PrimaryKey("PK_Classes", x => x.ClassId);
                     table.ForeignKey(
                         name: "FK_Classes_Users_UserId",
                         column: x => x.UserId,
@@ -70,7 +70,7 @@ namespace FitnessProject.Migrations
                         name: "FK_RSVPs_Classes_ClassId",
                         column: x => x.ClassId,
                         principalTable: "Classes",
-                        principalColumn: "WeddingId",
+                        principalColumn: "ClassId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_RSVPs_Users_UserId",
