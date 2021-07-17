@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using FitnessProject.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -30,24 +31,27 @@ namespace FitnessProject.Controllers
             _signInManager = signInManager;
         }
 
-        // [HttpGet("dashboard")]
-        // public IActionResult Dashboard()
-        // {
-        //     if (!isLoggedIn)
-        //     {
-        //         return RedirectToAction("Index", "Home");
-        //     }
-        //     // query user and put in container
-        //     User u = _db.Users.FirstOrDefault(u => u.UserId == (int)uid);
-        //     Container container = new Container();
-        //     container.LoggedUser = u;
-        //     container.AllClasses = _db.Classes
-        //     .Include(c => c.Instructor)
-        //     .Include(w => w.Attending)
-        //     .ThenInclude(u => u.Attendee)
-        //     .ToList();
-        //     return View(container);
-        // }
+        [Authorize]
+        [HttpGet("")]
+        public RedirectToActionResult Index()
+        {
+            return RedirectToAction("Dashboard", "Fitness");
+        }
+
+        [Authorize]
+        [HttpGet("dashboard")]
+        public IActionResult Dashboard()
+        {
+            Container container = new Container();
+            string UserId = _userManager.GetUserId(User);
+            container.LoggedUser = _db.users.FirstOrDefault(x => x.Id == UserId);
+            // container.AllClasses = _db.Classes
+            // .Include(c => c.Instructor)
+            // .Include(w => w.Attending)
+            // .ThenInclude(u => u.Attendee)
+            // .ToList();
+            return View(container);
+        }
         // [HttpGet("newclass")]
         // public IActionResult NewClass()
         // {

@@ -51,12 +51,12 @@ namespace FitnessProject.Controllers
             return _userManager.GetUserAsync(HttpContext.User);
         }
 
-        [HttpGet("Logout")]
+        [HttpGet("logout")]
         [Authorize]
         public async Task<RedirectToActionResult> LogoutAsync()
         {
             await _signInManager.SignOutAsync();
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Fitness");
         }
 
 
@@ -66,7 +66,7 @@ namespace FitnessProject.Controllers
         public IActionResult Signin(string returnUrl)
         {
             var UserId = _userManager.GetUserId(User);
-            if (UserId != null) return RedirectToAction("Index", "Home");
+            if (UserId != null) return RedirectToAction("Index", "Fitness");
             ViewBag.ReturnUrl = returnUrl;
             ViewBag.Count = 0;
 
@@ -74,7 +74,7 @@ namespace FitnessProject.Controllers
             return View();
         }
 
-        [HttpPost("Login")]
+        [HttpPost("login")]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
@@ -90,7 +90,7 @@ namespace FitnessProject.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError("Email", "Invalid email or password.");
+                    ModelState.AddModelError("LoginEmail", "Invalid email or password.");
                 }
             }
 
@@ -99,11 +99,12 @@ namespace FitnessProject.Controllers
         }
 
 
-        [HttpPost("Register")]
+        [HttpPost("register")]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> RegisterUser(RegisterViewModel model)
+        public async Task<IActionResult> RegisterUser(RegisterViewModel model, string returnUrl)
         {
+            int count = 0;
             if (ModelState.IsValid)
             {
                 //Create a new User object, without adding a Password
@@ -117,14 +118,18 @@ namespace FitnessProject.Controllers
                     //Sign In the newly created User
                     //We're using the SignInManager, not the UserManager!
                     await _signInManager.SignInAsync(NewUser, isPersistent: false);
+                    return RedirectToLocal(returnUrl);
                 }
                 //If the creation failed, add the errors to the View Model
                 foreach (var error in result.Errors)
                 {
-                    ModelState.AddModelError(string.Empty, error.Description);
+                    ModelState.AddModelError(string.Empty, error.Description.Replace("Username", "Email"));
+                    count++;
                 }
             }
-            return View(model);
+            ViewBag.ReturnUrl = returnUrl;
+            ViewBag.Count = count;
+            return View("signin");
         }
         // ************************************WEIRD STUFF DONE********************
 
@@ -189,12 +194,6 @@ namespace FitnessProject.Controllers
         //     // if we reach here, it is no good
         //     return View("Index");
         // }
-        [HttpGet("logout")]
-        public IActionResult LogOut()
-        {
-            HttpContext.Session.Clear();
-            return RedirectToAction("Index");
-        }
 
         public IActionResult Privacy()
         {
@@ -215,7 +214,7 @@ namespace FitnessProject.Controllers
             }
             else
             {
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Index", "Fitness");
             }
         }
     }
