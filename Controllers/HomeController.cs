@@ -30,7 +30,7 @@ namespace FitnessProject.Controllers
         }
 
         [HttpGet("Logout")]
-        [Authorize]
+        [Authorize(Roles = "Student, Instructor, Admin")]
         public async Task<RedirectToActionResult> LogoutAsync()
         {
             await _signInManager.SignOutAsync();
@@ -87,6 +87,8 @@ namespace FitnessProject.Controllers
                 //If the User was added to the database successfully
                 if (result.Succeeded)
                 {
+                    // Each new user is added to the "Level1" Role
+                    await _userManager.AddToRoleAsync(NewUser, "Student");
                     //Sign In the newly created User
                     //We're using the SignInManager, not the UserManager!
                     await _signInManager.SignInAsync(NewUser, isPersistent: false);

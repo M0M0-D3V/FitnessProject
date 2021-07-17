@@ -28,7 +28,7 @@ namespace FitnessProject
         {
             services.AddSession();
             services.AddDbContext<MyContext>(options => options.UseMySql(Configuration["DBInfo:ConnectionString"]));
-            
+
             services.AddIdentity<User, IdentityRole>()
             .AddEntityFrameworkStores<MyContext>()
             .AddDefaultTokenProviders();
@@ -60,7 +60,30 @@ namespace FitnessProject
 
             app.UseAuthentication();
 
+            InitializeRoles(app.ApplicationServices).Wait();
+
             app.UseMvc();
+        }
+
+        private async Task InitializeRoles(IServiceProvider serviceProvider)
+        {
+            // Array of Roles to create
+            // RoleManager<IdentityRole> roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+            var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+            
+            string[] RolesToCreate = new string[] { "Student", "Instructor", "Admin" };
+            
+            IdentityResult roleResult;
+
+            foreach (string role in RolesToCreate)
+            {
+                var roleExist = await roleManager.RoleExistsAsync(role);
+                // If a Role doesn't already exist, create it
+                if(!roleExist)
+                {
+                    roleResult = await roleManager.CreateAsync(new IdentityRole(role));
+                }
+            }
         }
     }
 }

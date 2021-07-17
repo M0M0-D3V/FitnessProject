@@ -37,7 +37,11 @@
                         else
                         {
                             <li class="nav-item">
-                                    <a class="nav-link text-dark fw-bold me-5" asp-area="" asp-controller="Home" asp-action="Signin">Signin</a>
+                                <div class="dropdown-menu">Signin
+                                    <a class="nav-link text-dark fw-bold me-5" asp-area="" asp-controller="Home" asp-action="StudentSignin">Student</a>
+                                    <a class="nav-link text-dark fw-bold me-5" asp-area="" asp-controller="Home" asp-action="InstructorSignin">Instructor</a>
+                                    <a class="nav-link text-dark fw-bold me-5" asp-area="" asp-controller="Home" asp-action="AdminSignin">Admin</a>
+                                </div>
                                 </li>
                         }
                     </ul>

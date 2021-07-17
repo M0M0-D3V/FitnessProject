@@ -22,14 +22,16 @@ namespace FitnessProject.Controllers
             _userManager = userManager;
             _signInManager = signInManager;
         }
-
+        
         [HttpGet("")]
+        [Authorize(Roles = "Student, Instructor, Admin")]
         public RedirectToActionResult Index()
         {
             return RedirectToAction("Dashboard", "Fitness");
         }
 
         [HttpGet("dashboard")]
+        [Authorize(Roles = "Student, Instructor, Admin")]
         public IActionResult Dashboard()
         {
             Container container = new Container();
