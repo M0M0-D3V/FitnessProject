@@ -9,20 +9,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FitnessProject.Controllers
 {
+    [Authorize]
     public class FitnessController : Controller
     {
         private MyContext _db;
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
-        private int? uid
-        {
-            get { return HttpContext.Session.GetInt32("UserId"); }
-        }
-        private bool isLoggedIn
-        {
-            get { return uid != null; }
-        }
-
         // here we can "inject" our context service into the constructor
         public FitnessController(MyContext context, UserManager<User> userManager, SignInManager<User> signInManager)
         {
@@ -31,25 +23,23 @@ namespace FitnessProject.Controllers
             _signInManager = signInManager;
         }
 
-        [Authorize]
         [HttpGet("")]
         public RedirectToActionResult Index()
         {
             return RedirectToAction("Dashboard", "Fitness");
         }
 
-        [Authorize]
         [HttpGet("dashboard")]
         public IActionResult Dashboard()
         {
             Container container = new Container();
             string UserId = _userManager.GetUserId(User);
             container.LoggedUser = _db.users.FirstOrDefault(x => x.Id == UserId);
-            // container.AllClasses = _db.Classes
-            // .Include(c => c.Instructor)
-            // .Include(w => w.Attending)
-            // .ThenInclude(u => u.Attendee)
-            // .ToList();
+            container.AllClasses = _db.classes
+            .Include(c => c.Instructor)
+            .Include(w => w.Attending)
+            .ThenInclude(u => u.Attendee)
+            .ToList();
             return View(container);
         }
         // [HttpGet("newclass")]

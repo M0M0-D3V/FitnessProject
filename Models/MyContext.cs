@@ -9,5 +9,6 @@ namespace FitnessProject.Models
         public MyContext(DbContextOptions options) : base(options){}
         public DbSet<User> users { get; set; }
         public DbSet<Class> classes { get; set; }
+        public DbSet<RSVP> RSVPs { get; set; }
     }
 }

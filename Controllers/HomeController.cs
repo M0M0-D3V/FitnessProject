@@ -17,16 +17,6 @@ namespace FitnessProject.Controllers
         private MyContext _db;
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
-        private int? uid
-        {
-            get { return HttpContext.Session.GetInt32("UserId"); }
-        }
-        private bool isLoggedIn
-        {
-            get { return uid != null; }
-        }
-
-        // here we can "inject" our context service into the constructor
         public HomeController(MyContext context, UserManager<User> userManager, SignInManager<User> signInManager)
         {
             _db = context;
@@ -34,24 +24,12 @@ namespace FitnessProject.Controllers
             _signInManager = signInManager;
         }
 
-        // [HttpGet("")]
-
-        // public IActionResult Index()
-        // {
-        //     if (!isLoggedIn)
-        //     {
-        //         return View();
-        //     }
-        //     return RedirectToAction("Dashboard", "Fitness");
-        // }
-
-        // ************************************WEIRD STUFF HERE********************
         private Task<User> GetCurrentUserAsync()
         {
             return _userManager.GetUserAsync(HttpContext.User);
         }
 
-        [HttpGet("logout")]
+        [HttpGet("Logout")]
         [Authorize]
         public async Task<RedirectToActionResult> LogoutAsync()
         {
@@ -59,9 +37,7 @@ namespace FitnessProject.Controllers
             return RedirectToAction("Index", "Fitness");
         }
 
-
-
-        [HttpGet("signin")]
+        [HttpGet("Signin")]
         [AllowAnonymous]
         public IActionResult Signin(string returnUrl)
         {
@@ -69,12 +45,10 @@ namespace FitnessProject.Controllers
             if (UserId != null) return RedirectToAction("Index", "Fitness");
             ViewBag.ReturnUrl = returnUrl;
             ViewBag.Count = 0;
-
-
             return View();
         }
 
-        [HttpPost("login")]
+        [HttpPost("Login")]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
@@ -93,13 +67,11 @@ namespace FitnessProject.Controllers
                     ModelState.AddModelError("LoginEmail", "Invalid email or password.");
                 }
             }
-
             ViewBag.ReturnUrl = returnUrl;
-            return View("signin");
+            return View("Signin");
         }
 
-
-        [HttpPost("register")]
+        [HttpPost("Register")]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> RegisterUser(RegisterViewModel model, string returnUrl)
@@ -108,7 +80,7 @@ namespace FitnessProject.Controllers
             if (ModelState.IsValid)
             {
                 //Create a new User object, without adding a Password
-                User NewUser = new User { UserName = model.Email, Email = model.Email, FirstName = model.FirstName, LastName = model.LastName };
+                User NewUser = new User { UserName = model.FirstName, Email = model.Email, FirstName = model.FirstName, LastName = model.LastName };
                 //CreateAsync will attempt to create the User in the database, simultaneously hashing the
                 //password
                 IdentityResult result = await _userManager.CreateAsync(NewUser, model.Password);
@@ -129,72 +101,8 @@ namespace FitnessProject.Controllers
             }
             ViewBag.ReturnUrl = returnUrl;
             ViewBag.Count = count;
-            return View("signin");
+            return View("Signin");
         }
-        // ************************************WEIRD STUFF DONE********************
-
-
-        // [HttpPost("register")]
-        // public IActionResult Register(User user)
-        // {
-        //     // some stuff to do
-        //     // check the validation
-        //     if (ModelState.IsValid)
-        //     {
-        //         // If a User exists with provided email
-        //         if (_db.Users.Any(u => u.Email == user.Email))
-        //         {
-        //             // Manually add a ModelState error to the Email field, with provided
-        //             // error message
-        //             ModelState.AddModelError("Email", "Email already in use!");
-        //             return View("Index");
-        //         }
-        //         // validation is good and email is unique
-        //         // save user to db after hashing password
-        //         PasswordHasher<User> Hasher = new PasswordHasher<User>();
-        //         user.Password = Hasher.HashPassword(user, user.Password);
-        //         _db.Users.Add(user);
-        //         _db.SaveChanges();
-        //         HttpContext.Session.SetInt32("UserId", user.UserId);
-        //         // redirecting to Dashboard() in WeddingController
-        //         return RedirectToAction("Dashboard", "Fitness");
-        //     }
-        //     // if we made it here, validation is wrong from the start
-        //     return View("Index");
-        // }
-        // [HttpPost("letmein")]
-        // public IActionResult LetMeIn(LoginUser lu)
-        // {
-        //     if (ModelState.IsValid)
-        //     {
-        //         // checking if everything is good!
-        //         // still gotta check if user pw matches hashed in db
-        //         User getUser = _db.Users.FirstOrDefault(u => u.Email == lu.LoginEmail);
-        //         // If no user exists with provided email
-        //         if (getUser == null)
-        //         {
-        //             // Add an error to ModelState and return to View!
-        //             ModelState.AddModelError("LoginEmail", "Invalid Email/Password");
-        //             return View("Index");
-        //         }
-        //         // Initialize hasher object
-        //         var hasher = new PasswordHasher<LoginUser>();
-        //         // verify provided password against hash stored in db
-        //         var result = hasher.VerifyHashedPassword(lu, getUser.Password, lu.LoginPassword);
-        //         if (result == 0) // 0 means failure
-        //         {
-        //             // handle failure (this should be similar to how "existing email" is handled)
-        //             ModelState.AddModelError("LoginPassword", "Invalid Email/Password");
-        //             return View("Index");
-        //         }
-        //         // if we get here, user is good!
-        //         HttpContext.Session.SetInt32("UserId", getUser.UserId);
-        //         return RedirectToAction("Dashboard", "Fitness");
-        //     }
-        //     // if we reach here, it is no good
-        //     return View("Index");
-        // }
-
         public IActionResult Privacy()
         {
             return View();

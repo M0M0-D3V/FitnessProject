@@ -35,8 +35,8 @@ namespace FitnessProject
 
             services.ConfigureApplicationCookie(options =>
                 {
-                    options.LoginPath = new PathString("/signin");
-                    options.AccessDeniedPath = new PathString("/signin");
+                    options.LoginPath = new PathString("/Signin");
+                    options.AccessDeniedPath = new PathString("/Signin");
                 });
 
             services.AddMvc(options => options.EnableEndpointRouting = false);
