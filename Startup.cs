@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using FitnessProject.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -15,7 +16,7 @@ namespace FitnessProject
 {
     public class Startup
     {
-        private IConfiguration Configuration { get;set; }
+        private IConfiguration Configuration { get; set; }
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -27,8 +28,17 @@ namespace FitnessProject
         {
             services.AddSession();
             services.AddDbContext<MyContext>(options => options.UseMySql(Configuration["DBInfo:ConnectionString"]));
-            services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<MyContext>().AddDefaultTokenProviders();
             
+            services.AddIdentity<User, IdentityRole>()
+            .AddEntityFrameworkStores<MyContext>()
+            .AddDefaultTokenProviders();
+
+            services.ConfigureApplicationCookie(options =>
+                {
+                    options.LoginPath = new PathString("/signin");
+                    options.AccessDeniedPath = new PathString("/signin");
+                });
+
             services.AddMvc(options => options.EnableEndpointRouting = false);
             services.AddAuthentication();
         }

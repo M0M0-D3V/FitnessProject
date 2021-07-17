@@ -1,14 +1,13 @@
-// using Microsoft.AspNetCore.Identity;
-// using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 //Other usings
 namespace FitnessProject.Models
 {
-    public class MyContext : IdentityDbContext
+    public class MyContext : IdentityDbContext<User>
     {
         //Setup Context as normal
         public MyContext(DbContextOptions options) : base(options){}
-        public DbSet<User> Users { get; set; }
-        public DbSet<Class> Classes { get; set; }
+        public DbSet<User> users { get; set; }
+        public DbSet<Class> classes { get; set; }
     }
 }

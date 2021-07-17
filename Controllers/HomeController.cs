@@ -4,16 +4,19 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using FitnessProject.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication;
 
 namespace FitnessProject.Controllers
 {
     public class HomeController : Controller
     {
         private MyContext _db;
+        private readonly UserManager<User> _userManager;
+        private readonly SignInManager<User> _signInManager;
         private int? uid
         {
             get { return HttpContext.Session.GetInt32("UserId"); }
@@ -24,82 +27,168 @@ namespace FitnessProject.Controllers
         }
 
         // here we can "inject" our context service into the constructor
-        public HomeController(MyContext context)
+        public HomeController(MyContext context, UserManager<User> userManager, SignInManager<User> signInManager)
         {
             _db = context;
+            _userManager = userManager;
+            _signInManager = signInManager;
         }
 
-        [HttpGet("")]
+        // [HttpGet("")]
 
-        public IActionResult Index()
+        // public IActionResult Index()
+        // {
+        //     if (!isLoggedIn)
+        //     {
+        //         return View();
+        //     }
+        //     return RedirectToAction("Dashboard", "Fitness");
+        // }
+
+        // ************************************WEIRD STUFF HERE********************
+        private Task<User> GetCurrentUserAsync()
         {
-            if (!isLoggedIn)
-            {
-                return View();
-            }
-            return RedirectToAction("Dashboard", "Fitness");
+            return _userManager.GetUserAsync(HttpContext.User);
         }
 
-        [HttpPost("register")]
-        public IActionResult Register(User user)
+        [HttpGet("Logout")]
+        [Authorize]
+        public async Task<RedirectToActionResult> LogoutAsync()
         {
-            // some stuff to do
-            // check the validation
+            await _signInManager.SignOutAsync();
+            return RedirectToAction("Index", "Home");
+        }
+
+
+
+        [HttpGet("signin")]
+        [AllowAnonymous]
+        public IActionResult Signin(string returnUrl)
+        {
+            var UserId = _userManager.GetUserId(User);
+            if (UserId != null) return RedirectToAction("Index", "Home");
+            ViewBag.ReturnUrl = returnUrl;
+            ViewBag.Count = 0;
+
+
+            return View();
+        }
+
+        [HttpPost("Login")]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
+        {
+
             if (ModelState.IsValid)
             {
-                // If a User exists with provided email
-                if (_db.Users.Any(u => u.Email == user.Email))
+                var user = await _userManager.FindByEmailAsync(email: model.LoginEmail);
+                if (user != null && await _userManager.CheckPasswordAsync(user, password: model.LoginPassword))
                 {
-                    // Manually add a ModelState error to the Email field, with provided
-                    // error message
-                    ModelState.AddModelError("Email", "Email already in use!");
-                    return View("Index");
+                    await _signInManager.SignInAsync(user, false);
+                    return RedirectToLocal(returnUrl);
                 }
-                // validation is good and email is unique
-                // save user to db after hashing password
-                PasswordHasher<User> Hasher = new PasswordHasher<User>();
-                user.Password = Hasher.HashPassword(user, user.Password);
-                _db.Users.Add(user);
-                _db.SaveChanges();
-                HttpContext.Session.SetInt32("UserId", user.UserId);
-                // redirecting to Dashboard() in WeddingController
-                return RedirectToAction("Dashboard", "Fitness");
+                else
+                {
+                    ModelState.AddModelError("Email", "Invalid email or password.");
+                }
             }
-            // if we made it here, validation is wrong from the start
-            return View("Index");
+
+            ViewBag.ReturnUrl = returnUrl;
+            return View("signin");
         }
-        [HttpPost("letmein")]
-        public IActionResult LetMeIn(LoginUser lu)
+
+
+        [HttpPost("Register")]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> RegisterUser(RegisterViewModel model)
         {
             if (ModelState.IsValid)
             {
-                // checking if everything is good!
-                // still gotta check if user pw matches hashed in db
-                User getUser = _db.Users.FirstOrDefault(u => u.Email == lu.LoginEmail);
-                // If no user exists with provided email
-                if (getUser == null)
+                //Create a new User object, without adding a Password
+                User NewUser = new User { UserName = model.Email, Email = model.Email, FirstName = model.FirstName, LastName = model.LastName };
+                //CreateAsync will attempt to create the User in the database, simultaneously hashing the
+                //password
+                IdentityResult result = await _userManager.CreateAsync(NewUser, model.Password);
+                //If the User was added to the database successfully
+                if (result.Succeeded)
                 {
-                    // Add an error to ModelState and return to View!
-                    ModelState.AddModelError("LoginEmail", "Invalid Email/Password");
-                    return View("Index");
+                    //Sign In the newly created User
+                    //We're using the SignInManager, not the UserManager!
+                    await _signInManager.SignInAsync(NewUser, isPersistent: false);
                 }
-                // Initialize hasher object
-                var hasher = new PasswordHasher<LoginUser>();
-                // verify provided password against hash stored in db
-                var result = hasher.VerifyHashedPassword(lu, getUser.Password, lu.LoginPassword);
-                if (result == 0) // 0 means failure
+                //If the creation failed, add the errors to the View Model
+                foreach (var error in result.Errors)
                 {
-                    // handle failure (this should be similar to how "existing email" is handled)
-                    ModelState.AddModelError("LoginPassword", "Invalid Email/Password");
-                    return View("Index");
+                    ModelState.AddModelError(string.Empty, error.Description);
                 }
-                // if we get here, user is good!
-                HttpContext.Session.SetInt32("UserId", getUser.UserId);
-                return RedirectToAction("Dashboard", "Fitness");
             }
-            // if we reach here, it is no good
-            return View("Index");
+            return View(model);
         }
+        // ************************************WEIRD STUFF DONE********************
+
+
+        // [HttpPost("register")]
+        // public IActionResult Register(User user)
+        // {
+        //     // some stuff to do
+        //     // check the validation
+        //     if (ModelState.IsValid)
+        //     {
+        //         // If a User exists with provided email
+        //         if (_db.Users.Any(u => u.Email == user.Email))
+        //         {
+        //             // Manually add a ModelState error to the Email field, with provided
+        //             // error message
+        //             ModelState.AddModelError("Email", "Email already in use!");
+        //             return View("Index");
+        //         }
+        //         // validation is good and email is unique
+        //         // save user to db after hashing password
+        //         PasswordHasher<User> Hasher = new PasswordHasher<User>();
+        //         user.Password = Hasher.HashPassword(user, user.Password);
+        //         _db.Users.Add(user);
+        //         _db.SaveChanges();
+        //         HttpContext.Session.SetInt32("UserId", user.UserId);
+        //         // redirecting to Dashboard() in WeddingController
+        //         return RedirectToAction("Dashboard", "Fitness");
+        //     }
+        //     // if we made it here, validation is wrong from the start
+        //     return View("Index");
+        // }
+        // [HttpPost("letmein")]
+        // public IActionResult LetMeIn(LoginUser lu)
+        // {
+        //     if (ModelState.IsValid)
+        //     {
+        //         // checking if everything is good!
+        //         // still gotta check if user pw matches hashed in db
+        //         User getUser = _db.Users.FirstOrDefault(u => u.Email == lu.LoginEmail);
+        //         // If no user exists with provided email
+        //         if (getUser == null)
+        //         {
+        //             // Add an error to ModelState and return to View!
+        //             ModelState.AddModelError("LoginEmail", "Invalid Email/Password");
+        //             return View("Index");
+        //         }
+        //         // Initialize hasher object
+        //         var hasher = new PasswordHasher<LoginUser>();
+        //         // verify provided password against hash stored in db
+        //         var result = hasher.VerifyHashedPassword(lu, getUser.Password, lu.LoginPassword);
+        //         if (result == 0) // 0 means failure
+        //         {
+        //             // handle failure (this should be similar to how "existing email" is handled)
+        //             ModelState.AddModelError("LoginPassword", "Invalid Email/Password");
+        //             return View("Index");
+        //         }
+        //         // if we get here, user is good!
+        //         HttpContext.Session.SetInt32("UserId", getUser.UserId);
+        //         return RedirectToAction("Dashboard", "Fitness");
+        //     }
+        //     // if we reach here, it is no good
+        //     return View("Index");
+        // }
         [HttpGet("logout")]
         public IActionResult LogOut()
         {
@@ -116,6 +205,18 @@ namespace FitnessProject.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        private ActionResult RedirectToLocal(string returnUrl)
+        {
+            if (Url.IsLocalUrl(returnUrl))
+            {
+                return Redirect(returnUrl);
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
         }
     }
 }
