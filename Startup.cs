@@ -44,7 +44,7 @@ namespace FitnessProject
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env,DbContextOptions<MyContext> identityDbContextOptions, RoleManager<IdentityRole> roleManager)
         {
             if (env.IsDevelopment())
             {
@@ -60,16 +60,17 @@ namespace FitnessProject
 
             app.UseAuthentication();
 
-            InitializeRoles(app.ApplicationServices).Wait();
+            // IServiceProvider applicationServices = app.ApplicationServices;
+            // InitializeRoles(applicationServices, roleManager).Wait();
 
             app.UseMvc();
         }
 
-        private async Task InitializeRoles(IServiceProvider serviceProvider)
+        private async Task InitializeRoles(IServiceProvider serviceProvider,  RoleManager<IdentityRole> roleManager)
         {
             // Array of Roles to create
             // RoleManager<IdentityRole> roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-            var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+            roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
             
             string[] RolesToCreate = new string[] { "Student", "Instructor", "Admin" };
             

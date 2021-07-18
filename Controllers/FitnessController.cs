@@ -24,14 +24,16 @@ namespace FitnessProject.Controllers
         }
         
         [HttpGet("")]
-        [Authorize(Roles = "Student, Instructor, Admin")]
+        // [Authorize(Roles = "Student, Instructor, Admin")]
+        [Authorize]
         public RedirectToActionResult Index()
         {
             return RedirectToAction("Dashboard", "Fitness");
         }
 
         [HttpGet("dashboard")]
-        [Authorize(Roles = "Student, Instructor, Admin")]
+        // [Authorize(Roles = "Student, Instructor, Admin")]
+        [Authorize]
         public IActionResult Dashboard()
         {
             Container container = new Container();

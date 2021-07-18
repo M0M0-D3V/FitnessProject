@@ -30,7 +30,8 @@ namespace FitnessProject.Controllers
         }
 
         [HttpGet("Logout")]
-        [Authorize(Roles = "Student, Instructor, Admin")]
+        [Authorize]
+        // [Authorize(Roles = "Student, Instructor, Admin")]
         public async Task<RedirectToActionResult> LogoutAsync()
         {
             await _signInManager.SignOutAsync();
