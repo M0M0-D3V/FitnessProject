@@ -32,6 +32,10 @@ namespace FitnessProject
             services.AddIdentity<User, IdentityRole>()
             .AddEntityFrameworkStores<MyContext>()
             .AddDefaultTokenProviders();
+            services.AddIdentityCore<User>()
+            .AddRoles<IdentityRole>()
+            .AddEntityFrameworkStores<MyContext>();
+
 
             services.ConfigureApplicationCookie(options =>
                 {
@@ -61,15 +65,15 @@ namespace FitnessProject
             app.UseAuthentication();
 
             // IServiceProvider applicationServices = app.ApplicationServices;
-            // InitializeRoles(applicationServices, roleManager).Wait();
+            // InitializeRoles(applicationServices).Wait();
 
             app.UseMvc();
         }
 
-        private async Task InitializeRoles(IServiceProvider serviceProvider,  RoleManager<IdentityRole> roleManager)
+        private async Task InitializeRoles(IServiceProvider serviceProvider)
         {
             // Array of Roles to create
-            // RoleManager<IdentityRole> roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+            RoleManager<IdentityRole> roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
             roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
             
             string[] RolesToCreate = new string[] { "Student", "Instructor", "Admin" };

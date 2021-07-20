@@ -25,7 +25,8 @@ namespace FitnessProject.Controllers
         
         [HttpGet("")]
         // [Authorize(Roles = "Student, Instructor, Admin")]
-        [Authorize]
+        [Authorize(Roles = "Student")]
+        // [Authorize]
         public RedirectToActionResult Index()
         {
             return RedirectToAction("Dashboard", "Fitness");
@@ -33,6 +34,7 @@ namespace FitnessProject.Controllers
 
         [HttpGet("dashboard")]
         // [Authorize(Roles = "Student, Instructor, Admin")]
+        [Authorize(Roles = "Student")]
         [Authorize]
         public IActionResult Dashboard()
         {

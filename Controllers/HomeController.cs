@@ -14,14 +14,16 @@ namespace FitnessProject.Controllers
 {
     public class HomeController : Controller
     {
-        private MyContext _db;
+        private RoleManager<IdentityRole> _roleManager;
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
-        public HomeController(MyContext context, UserManager<User> userManager, SignInManager<User> signInManager)
+        private MyContext _db;
+        public HomeController(MyContext context, UserManager<User> userManager, SignInManager<User> signInManager, RoleManager<IdentityRole> roleMgr)
         {
             _db = context;
             _userManager = userManager;
             _signInManager = signInManager;
+            _roleManager = roleMgr;
         }
 
         private Task<User> GetCurrentUserAsync()
@@ -80,6 +82,13 @@ namespace FitnessProject.Controllers
             int count = 0;
             if (ModelState.IsValid)
             {
+                var roleExist = await _roleManager.RoleExistsAsync("Student");
+                // If a Role doesn't already exist, create it
+                if(!roleExist)
+                {
+                    IdentityResult roleResult = await _roleManager.CreateAsync(new IdentityRole("Student"));
+                }
+
                 //Create a new User object, without adding a Password
                 User NewUser = new User { UserName = model.FirstName, Email = model.Email, FirstName = model.FirstName, LastName = model.LastName };
                 //CreateAsync will attempt to create the User in the database, simultaneously hashing the
