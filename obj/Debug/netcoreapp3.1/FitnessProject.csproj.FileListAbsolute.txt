@@ -141,3 +141,8 @@ C:\Users\mimi_\Documents\Projects\FitnessProject\bin\Debug\netcoreapp3.1\tr\Micr
 C:\Users\mimi_\Documents\Projects\FitnessProject\bin\Debug\netcoreapp3.1\zh-Hans\Microsoft.CodeAnalysis.Workspaces.resources.dll
 C:\Users\mimi_\Documents\Projects\FitnessProject\bin\Debug\netcoreapp3.1\zh-Hant\Microsoft.CodeAnalysis.Workspaces.resources.dll
 C:\Users\mimi_\Documents\Projects\FitnessProject\obj\Debug\netcoreapp3.1\Razor\Views\Home\Signin.cshtml.g.cs
+C:\Users\mimi_\Documents\Projects\FitnessProject\obj\Debug\netcoreapp3.1\Razor\Views\Home\AdminSignin.cshtml.g.cs
+C:\Users\mimi_\Documents\Projects\FitnessProject\obj\Debug\netcoreapp3.1\Razor\Views\Home\InstructorSignin.cshtml.g.cs
+C:\Users\mimi_\Documents\Projects\FitnessProject\obj\Debug\netcoreapp3.1\Razor\Views\Home\_AdminLogin.cshtml.g.cs
+C:\Users\mimi_\Documents\Projects\FitnessProject\obj\Debug\netcoreapp3.1\Razor\Views\Home\_InstructorLogin.cshtml.g.cs
+C:\Users\mimi_\Documents\Projects\FitnessProject\obj\Debug\netcoreapp3.1\Razor\Views\Home\_InstructorRegister.cshtml.g.cs

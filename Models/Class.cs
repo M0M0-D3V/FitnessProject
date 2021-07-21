@@ -43,9 +43,9 @@ namespace FitnessProject.Models
         public DateTime CreatedAt { get; set; } = DateTime.Now;
         public DateTime UpdatedAt { get; set; } = DateTime.Now;
         // foreign key
-        public string UserId { get; set; }
+        public string InstructorId { get; set; }
         // navigational property
-        public User Instructor { get; set; }
+        public Instructor Instructor { get; set; }
         // many to many
         public List<RSVP> Attending { get; set; }
     }

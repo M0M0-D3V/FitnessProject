@@ -32,8 +32,7 @@ namespace FitnessProject.Controllers
         }
 
         [HttpGet("Logout")]
-        [Authorize]
-        // [Authorize(Roles = "Student, Instructor, Admin")]
+        [Authorize(Roles = "Student, Instructor, Admin")]
         public async Task<RedirectToActionResult> LogoutAsync()
         {
             await _signInManager.SignOutAsync();
@@ -50,11 +49,31 @@ namespace FitnessProject.Controllers
             ViewBag.Count = 0;
             return View();
         }
+        [HttpGet("instructor-signin")]
+        [AllowAnonymous]
+        public IActionResult InstructorSignin(string returnUrl)
+        {
+            var UserId = _userManager.GetUserId(User);
+            if (UserId != null) return RedirectToAction("Index", "Fitness");
+            ViewBag.ReturnUrl = returnUrl;
+            ViewBag.Count = 0;
+            return View();
+        }
+        [HttpGet("admin-signin")]
+        [AllowAnonymous]
+        public IActionResult AdminSignin(string returnUrl)
+        {
+            var UserId = _userManager.GetUserId(User);
+            if (UserId != null) return RedirectToAction("Index", "Fitness");
+            ViewBag.ReturnUrl = returnUrl;
+            ViewBag.Count = 0;
+            return View();
+        }
 
-        [HttpPost("Login")]
+        [HttpPost("UserLogin")]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
+        public async Task<ActionResult> UserLogin(LoginViewModel model, string returnUrl)
         {
 
             if (ModelState.IsValid)
@@ -74,7 +93,7 @@ namespace FitnessProject.Controllers
             return View("Signin");
         }
 
-        [HttpPost("Register")]
+        [HttpPost("UserRegister")]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> RegisterUser(RegisterViewModel model, string returnUrl)

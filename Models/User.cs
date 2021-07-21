@@ -9,11 +9,11 @@ namespace FitnessProject.Models
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public List<Class> Classes { get; set; }
+        // public List<Class> Classes { get; set; }
         public List<RSVP> MyRSVPs { get; set; }
         public User()
         {
-            Classes = new List<Class>();
+            // Classes = new List<Class>();
             MyRSVPs = new List<RSVP>();
         }
     }

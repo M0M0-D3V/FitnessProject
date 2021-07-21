@@ -14412,6 +14412,21 @@
       "FileKind": "mvc"
     },
     {
+      "FilePath": "c:\\Users\\mimi_\\Documents\\Projects\\FitnessProject\\Views\\Home\\_AdminLogin.cshtml",
+      "TargetPath": "Views\\Home\\_AdminLogin.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "c:\\Users\\mimi_\\Documents\\Projects\\FitnessProject\\Views\\Home\\AdminSignin.cshtml",
+      "TargetPath": "Views\\Home\\AdminSignin.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "c:\\Users\\mimi_\\Documents\\Projects\\FitnessProject\\Views\\Home\\_InstructorRegister.cshtml",
+      "TargetPath": "Views\\Home\\_InstructorRegister.cshtml",
+      "FileKind": "mvc"
+    },
+    {
       "FilePath": "c:\\Users\\mimi_\\Documents\\Projects\\FitnessProject\\Views\\Shared\\Error.cshtml",
       "TargetPath": "Views\\Shared\\Error.cshtml",
       "FileKind": "mvc"
@@ -14457,8 +14472,18 @@
       "FileKind": "mvc"
     },
     {
+      "FilePath": "c:\\Users\\mimi_\\Documents\\Projects\\FitnessProject\\Views\\Home\\InstructorSignin.cshtml",
+      "TargetPath": "Views\\Home\\InstructorSignin.cshtml",
+      "FileKind": "mvc"
+    },
+    {
       "FilePath": "c:\\Users\\mimi_\\Documents\\Projects\\FitnessProject\\Views\\Fitness\\NewClass.cshtml",
       "TargetPath": "Views\\Fitness\\NewClass.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "c:\\Users\\mimi_\\Documents\\Projects\\FitnessProject\\Views\\Home\\_InstructorLogin.cshtml",
+      "TargetPath": "Views\\Home\\_InstructorLogin.cshtml",
       "FileKind": "mvc"
     }
   ],

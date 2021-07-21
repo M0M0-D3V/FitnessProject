@@ -37,15 +37,13 @@
                             }
                             else
                             {
-                                <li class="nav-item">
-                                    meowmeow
-                                </li>
-                                <li class="nav-item">
-                                    <div class="dropdown-menu"><button>Signin</button>
-                                        <a class="nav-link text-dark fw-bold me-5" asp-area="" asp-controller="Home" asp-action="StudentSignin">Student</a>
-                                        <a class="nav-link text-dark fw-bold me-5" asp-area="" asp-controller="Home" asp-action="InstructorSignin">Instructor</a>
-                                        <a class="nav-link text-dark fw-bold me-5" asp-area="" asp-controller="Home" asp-action="AdminSignin">Admin</a>
-                                    </div>
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Signin</a>
+                                        <div class="dropdown-menu">
+                                            <a class="dropdown-item text-dark fw-bold me-5" asp-area="" asp-controller="Home" asp-action="Signin">Student</a>
+                                            <a class="dropdown-item text-dark fw-bold me-5" asp-area="" asp-controller="Home" asp-action="InstructorSignin">Instructor</a>
+                                            <a class="dropdown-item text-dark fw-bold me-5" asp-area="" asp-controller="Home" asp-action="AdminSignin">Admin</a>
+                                        </div>
                                 </li>
                             }
                         }
