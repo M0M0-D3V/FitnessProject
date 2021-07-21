@@ -5,18 +5,15 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 namespace FitnessProject.Models
 {
-    public class Instructor : IdentityUser
+    public class Instructor
     {
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
+        [Key]
+        public int InstructorId { get; set; }
+        public string InstructorPhoto { get; set; }
         public string Expertise { get; set; }
         public string Biography { get; set; }
+        public string UserId { get; set; }
+        public User User { get; set; }
         public List<Class> Classes { get; set; }
-        // public List<RSVP> MyRSVPs { get; set; }
-        public Instructor()
-        {
-            Classes = new List<Class>();
-            // MyRSVPs = new List<RSVP>();
-        }
     }
 }

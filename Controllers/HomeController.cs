@@ -44,7 +44,12 @@ namespace FitnessProject.Controllers
         public IActionResult Signin(string returnUrl)
         {
             var UserId = _userManager.GetUserId(User);
-            if (UserId != null) return RedirectToAction("Index", "Fitness");
+            User user = _db.users.FirstOrDefault(u => u.Id == UserId);
+            var hasRole = _userManager.IsInRoleAsync(user, "Student");
+            if (UserId != null)
+            {
+                return RedirectToAction("Index", "Fitness");
+            }
             ViewBag.ReturnUrl = returnUrl;
             ViewBag.Count = 0;
             return View();
@@ -93,10 +98,33 @@ namespace FitnessProject.Controllers
             return View("Signin");
         }
 
+        [HttpPost("InstructorLogin")]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> InstructorLogin(LoginViewModel model, string returnUrl)
+        {
+
+            if (ModelState.IsValid)
+            {
+                var user = await _userManager.FindByEmailAsync(email: model.LoginEmail);
+                if (user != null && await _userManager.CheckPasswordAsync(user, password: model.LoginPassword))
+                {
+                    await _signInManager.SignInAsync(user, false);
+                    return RedirectToLocal(returnUrl);
+                }
+                else
+                {
+                    ModelState.AddModelError("LoginEmail", "Invalid email or password.");
+                }
+            }
+            ViewBag.ReturnUrl = returnUrl;
+            return View("InstructorSignin");
+        }
+
         [HttpPost("UserRegister")]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> RegisterUser(RegisterViewModel model, string returnUrl)
+        public async Task<IActionResult> UserRegister(RegisterViewModel model, string returnUrl)
         {
             int count = 0;
             if (ModelState.IsValid)
@@ -134,6 +162,53 @@ namespace FitnessProject.Controllers
             ViewBag.Count = count;
             return View("Signin");
         }
+
+        [HttpPost("InstructorRegister")]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> InstructorRegister(RegisterViewModel model, string returnUrl)
+        {
+            int count = 0;
+            if (ModelState.IsValid)
+            {
+                var roleExist = await _roleManager.RoleExistsAsync("Instructor");
+                // If a Role doesn't already exist, create it
+                if(!roleExist)
+                {
+                    IdentityResult roleResult = await _roleManager.CreateAsync(new IdentityRole("Instructor"));
+                }
+
+                //Create a new User object, without adding a Password
+                User NewUser = new User { UserName = model.FirstName, Email = model.Email, FirstName = model.FirstName, LastName = model.LastName };
+                //CreateAsync will attempt to create the User in the database, simultaneously hashing the
+                //password
+                IdentityResult result = await _userManager.CreateAsync(NewUser, model.Password);
+                //If the User was added to the database successfully
+                if (result.Succeeded)
+                {
+                    // Each new user is added to the "Level1" Role
+                    await _userManager.AddToRoleAsync(NewUser, "Instructor");
+                    //Sign In the newly created User
+                    //We're using the SignInManager, not the UserManager!
+                    await _signInManager.SignInAsync(NewUser, isPersistent: false);
+                    Instructor newTeacher = new Instructor();
+                    newTeacher.UserId = NewUser.Id;
+                    _db.Instructors.Add(newTeacher);
+                    _db.SaveChanges();
+                    return RedirectToLocal(returnUrl);
+                }
+                //If the creation failed, add the errors to the View Model
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, error.Description.Replace("Username", "Email"));
+                    count++;
+                }
+            }
+            ViewBag.ReturnUrl = returnUrl;
+            ViewBag.Count = count;
+            return View("InstructorSignin");
+        }
+
         public IActionResult Privacy()
         {
             return View();

@@ -8,7 +8,8 @@ namespace FitnessProject.Models
         //Setup Context as normal
         public MyContext(DbContextOptions options) : base(options){}
         public DbSet<User> users { get; set; }
-        public DbSet<Class> classes { get; set; }
+        public DbSet<Instructor> Instructors { get; set; }
+        public DbSet<Class> Classes { get; set; }
         public DbSet<RSVP> RSVPs { get; set; }
     }
 }

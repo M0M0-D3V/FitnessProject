@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace FitnessProject.Migrations
 {
-    public partial class InstructorClass1 : Migration
+    public partial class Restart : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -47,35 +47,6 @@ namespace FitnessProject.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Instructor",
-                columns: table => new
-                {
-                    Id = table.Column<string>(nullable: false),
-                    UserName = table.Column<string>(nullable: true),
-                    NormalizedUserName = table.Column<string>(nullable: true),
-                    Email = table.Column<string>(nullable: true),
-                    NormalizedEmail = table.Column<string>(nullable: true),
-                    EmailConfirmed = table.Column<bool>(nullable: false),
-                    PasswordHash = table.Column<string>(nullable: true),
-                    SecurityStamp = table.Column<string>(nullable: true),
-                    ConcurrencyStamp = table.Column<string>(nullable: true),
-                    PhoneNumber = table.Column<string>(nullable: true),
-                    PhoneNumberConfirmed = table.Column<bool>(nullable: false),
-                    TwoFactorEnabled = table.Column<bool>(nullable: false),
-                    LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
-                    LockoutEnabled = table.Column<bool>(nullable: false),
-                    AccessFailedCount = table.Column<int>(nullable: false),
-                    FirstName = table.Column<string>(nullable: true),
-                    LastName = table.Column<string>(nullable: true),
-                    Expertise = table.Column<string>(nullable: true),
-                    Biography = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Instructor", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -185,7 +156,28 @@ namespace FitnessProject.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "classes",
+                name: "Instructors",
+                columns: table => new
+                {
+                    InstructorId = table.Column<int>(nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Expertise = table.Column<string>(nullable: true),
+                    Biography = table.Column<string>(nullable: true),
+                    UserId = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Instructors", x => x.InstructorId);
+                    table.ForeignKey(
+                        name: "FK_Instructors_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Classes",
                 columns: table => new
                 {
                     ClassId = table.Column<int>(nullable: false)
@@ -197,19 +189,20 @@ namespace FitnessProject.Migrations
                     EndTime = table.Column<DateTime>(nullable: false),
                     Location = table.Column<string>(nullable: false),
                     ClassSize = table.Column<int>(nullable: false),
+                    ClassPhoto = table.Column<string>(nullable: false),
                     CreatedAt = table.Column<DateTime>(nullable: false),
                     UpdatedAt = table.Column<DateTime>(nullable: false),
-                    InstructorId = table.Column<string>(nullable: true)
+                    InstructorId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_classes", x => x.ClassId);
+                    table.PrimaryKey("PK_Classes", x => x.ClassId);
                     table.ForeignKey(
-                        name: "FK_classes_Instructor_InstructorId",
+                        name: "FK_Classes_Instructors_InstructorId",
                         column: x => x.InstructorId,
-                        principalTable: "Instructor",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        principalTable: "Instructors",
+                        principalColumn: "InstructorId",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -225,9 +218,9 @@ namespace FitnessProject.Migrations
                 {
                     table.PrimaryKey("PK_RSVPs", x => x.RSVPId);
                     table.ForeignKey(
-                        name: "FK_RSVPs_classes_ClassId",
+                        name: "FK_RSVPs_Classes_ClassId",
                         column: x => x.ClassId,
-                        principalTable: "classes",
+                        principalTable: "Classes",
                         principalColumn: "ClassId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -276,9 +269,14 @@ namespace FitnessProject.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_classes_InstructorId",
-                table: "classes",
+                name: "IX_Classes_InstructorId",
+                table: "Classes",
                 column: "InstructorId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Instructors_UserId",
+                table: "Instructors",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_RSVPs_ClassId",
@@ -315,13 +313,13 @@ namespace FitnessProject.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "classes");
+                name: "Classes");
+
+            migrationBuilder.DropTable(
+                name: "Instructors");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
-
-            migrationBuilder.DropTable(
-                name: "Instructor");
         }
     }
 }

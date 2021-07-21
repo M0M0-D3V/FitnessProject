@@ -37,7 +37,7 @@ namespace FitnessProject.Controllers
             Container container = new Container();
             string UserId = _userManager.GetUserId(User);
             container.LoggedUser = _db.users.FirstOrDefault(x => x.Id == UserId);
-            container.AllClasses = _db.classes
+            container.AllClasses = _db.Classes
             .Include(c => c.Instructor)
             .Include(w => w.Attending)
             .ThenInclude(u => u.Attendee)
