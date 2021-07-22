@@ -44,6 +44,31 @@ namespace FitnessProject.Controllers
             .ToList();
             return View(container);
         }
+
+        [HttpGet("profile")]
+        [Authorize(Roles = "Student, Instructor, Admin")]
+        public IActionResult Profile()
+        {
+            Container container = new Container();
+            string UserId = _userManager.GetUserId(User);
+            container.LoggedUser = _db.users.FirstOrDefault(x => x.Id == UserId);
+            // see if user is instructor
+            Instructor teacher = _db.Instructors
+            .Include(t => t.User)
+            .FirstOrDefault(t => t.UserId == UserId);
+            if(teacher != null)
+            {
+                container.LoggedInstructor = teacher;
+            }
+            container.AllClasses = _db.Classes
+            .Include(c => c.Instructor)
+            .Include(w => w.Attending)
+            .ThenInclude(u => u.Attendee)
+            .ToList();
+            return View(container);
+        }
+
+
         // [HttpGet("newclass")]
         // public IActionResult NewClass()
         // {

@@ -26,8 +26,11 @@
                 <td>buttons</td>
             </tr>
         }
-        <tr>>
+        <tr>
     </table>
     <hr>
-    <a asp-action="NewClass" asp-controller="Fitness" class="btn btn-sm">New Class</a>
+    @if(User.IsInRole("Instructor"))
+    {
+        <a asp-action="NewClass" asp-controller="Fitness" class="btn btn-sm btn-success">New Class</a>
+    }
 </div>

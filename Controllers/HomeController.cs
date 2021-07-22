@@ -59,6 +59,8 @@ namespace FitnessProject.Controllers
         public IActionResult InstructorSignin(string returnUrl)
         {
             var UserId = _userManager.GetUserId(User);
+            User user = _db.users.FirstOrDefault(u => u.Id == UserId);
+            var hasRole = _userManager.IsInRoleAsync(user, "Instructor");
             if (UserId != null) return RedirectToAction("Index", "Fitness");
             ViewBag.ReturnUrl = returnUrl;
             ViewBag.Count = 0;
