@@ -9,6 +9,8 @@ namespace FitnessProject.Models
     {
         [Key]
         public int InstructorId { get; set; }
+
+        [Display(Name = "Instructor Photo")]
         public string InstructorPhoto { get; set; }
         public string Expertise { get; set; }
         public string Biography { get; set; }

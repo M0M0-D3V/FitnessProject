@@ -69,6 +69,15 @@ namespace FitnessProject.Controllers
             return View(container);
         }
 
+        [HttpGet("edit-instructor/{id}")]
+        [Authorize(Roles = "Instructor, Admin")]
+        public IActionResult EditInstructorProfile(int id)
+        {
+            Instructor teacher = _db.Instructors.FirstOrDefault(t => t.InstructorId == id);
+            Container container = new Container();
+            container.LoggedInstructor = teacher;
+            return View(container);
+        }
 
         [HttpGet("newclass")]
         [Authorize(Roles = "Instructor, Admin")]
@@ -109,24 +118,36 @@ namespace FitnessProject.Controllers
             // show a view with a form
             return View("NewClass", fromForm);
         }
-        // [HttpGet("class/{classId}")]
-        // public IActionResult OneClass(int classId)
-        // {
-        //     if (!isLoggedIn)
-        //     {
-        //         return RedirectToAction("Index", "Home");
-        //     }
-        //     User u = _db.Users.FirstOrDefault(u => u.UserId == (int)uid);
-        //     Container container = new Container();
-        //     container.LoggedUser = u;
-        //     container.Class = _db.Classes.FirstOrDefault(w => w.ClassId == classId);
-        //     container.AllRSVPs = _db.RSVPs
-        //     .Where(r => r.ClassId == classId)
-        //     .Include(r => r.Attendee)
-        //     .Include(e => e.AttendeeOf)
-        //     .ThenInclude(u => u.Instructor)
-        //     .ToList();
-        //     return View(container);
-        // }
+
+        [HttpPost("process-instructor/{id}")]
+        [Authorize(Roles = "Instructor, Admin")]
+        public IActionResult ProcessInstructor(Container fromForm, int id)
+        {
+            Instructor teacher = _db.Instructors.FirstOrDefault(t => t.InstructorId == id);
+            teacher.InstructorPhoto = fromForm.LoggedInstructor.InstructorPhoto;
+            teacher.Expertise = fromForm.LoggedInstructor.Expertise;
+            teacher.Biography = fromForm.LoggedInstructor.Biography;
+            _db.SaveChanges();
+            Console.WriteLine("successfully updated");
+            return RedirectToAction("Profile", "Fitness");
+        }
+
+        [HttpGet("class/{classId}")]
+        [Authorize(Roles = "Student, Instructor, Admin")]
+        public IActionResult OneClass(int classId)
+        {
+            string UserId = _userManager.GetUserId(User);
+            Container container = new Container();
+            container.LoggedUser = _db.users.FirstOrDefault(x => x.Id == UserId);
+            container.LoggedInstructor = _db.Instructors.FirstOrDefault(t => t.UserId == UserId);
+            container.Class = _db.Classes.FirstOrDefault(w => w.ClassId == classId);
+            container.AllRSVPs = _db.RSVPs
+            .Where(r => r.ClassId == classId)
+            .Include(r => r.Attendee)
+            .Include(e => e.Attending)
+            .ThenInclude(u => u.Instructor)
+            .ToList();
+            return View(container);
+        }
     }
 }

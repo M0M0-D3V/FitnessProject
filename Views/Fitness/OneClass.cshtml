@@ -1,31 +1,38 @@
 @model Container
 <div class="row">
-    @* <h1>Welcome @Model.LoggedUser.FirstName</h1> *@
-    <a asp-action="Dashboard" asp-controller="Fitness">Dashboard</a>
-    <a asp-action="LogOut" asp-controller="Home">LogOut</a>
+    <div class="col-md-6">
+        <h1>@Model.Class.ClassName with @Model.Class.Instructor.User.FirstName</h1>
+        <h5>Class Date: @Model.Class.ClassDate.ToString("MMMM dd yyy")</h5>
+        <h5>Guests:</h5>
+        <ul>
+            @foreach (var rsvp in Model.AllRSVPs)
+            {
+                <li>@rsvp.Attendee.FirstName @rsvp.Attendee.LastName</li>
+            }
+        </ul>
+        @{
+            if (User.IsInRole("Instructor"))
+            {
+                if (Model.Class.InstructorId == Model.LoggedInstructor.InstructorId)
+                {
+                    <a asp-action="Delete" asp-controller="FitnessClass" asp-route-ClassId="@Model.Class.ClassId"
+            class="btn btn-sm btn-danger">Delete</a>
+                }
+            }
+            if (@Model.Class.Attending != null)
+            {
+                if (@Model.Class.Attending.Any(a => a.UserId == Model.LoggedUser.Id))
+                {
+                    <a asp-action="UnRSVP" asp-controller="Fitness" asp-route-classId="@Model.Class.ClassId"><button
+                    class="btn btn-sm btn-warning">Un-RSVP</button></a>
+                }
+            }
+            else
+            {
+                <a asp-action="RSVP" asp-controller="Fitness" asp-route-classId="@Model.Class.ClassId"><button
+                    class="btn btn-sm btn-primary">RSVP</button></a>
+            }
+        }
+    </div>
+    <div class="col-md-6"><img class="class-photo" src="@Model.Class.ClassPhoto" alt="@Model.Class.ClassName"></div>
 </div>
-@* <h1>@Model.Class.ClassName with @Model.Class.Instructor.FirstName</h1>
-<h5>Class Date: @Model.Class.ClassDate.ToString("MMMM dd yyy")</h5>
-<h5>Guests:</h5>
-<ul>
-    @foreach (var rsvp in Model.AllRSVPs)
-    {
-        <li>@rsvp.Attendee.FirstName @rsvp.Attendee.LastName</li>
-    }
-</ul>
-
-@if (Model.Class.UserId == Model.LoggedUser.UserId)
-{
-    <a asp-action="Delete" asp-controller="FitnessClass" asp-route-ClassId="@Model.Class.ClassId"
-    class="btn btn-sm btn-danger">Delete</a>
-}
-else if (@Model.Class.Attending.Any(a => a.UserId == Model.LoggedUser.UserId))
-{
-    <a asp-action="UnRSVP" asp-controller="Fitness" asp-route-classId="@Model.Class.ClassId"><button
-        class="btn btn-sm btn-warning">Un-RSVP</button></a>
-}
-else
-{
-    <a asp-action="RSVP" asp-controller="Fitness" asp-route-classId="@Model.Class.ClassId"><button
-        class="btn btn-sm btn-primary">RSVP</button></a>
-} *@

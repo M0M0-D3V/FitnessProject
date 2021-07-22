@@ -97,3 +97,18 @@ div.img-center {
 .inline-block {
   display: inline-block;
 }
+
+.instructor-link {
+  text-align: right;
+  color: wheat;
+  text-decoration: none;
+  text-shadow: gray;
+}
+.instructor-link:hover {
+  color: cyan;
+}
+
+.class-photo {
+  width: 500px;
+  border-radius: 15px;
+}
