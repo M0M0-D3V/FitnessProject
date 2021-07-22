@@ -1,12 +1,14 @@
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-
+//Other usings
 namespace FitnessProject.Models
 {
-    public class MyContext : DbContext
+    public class MyContext : IdentityDbContext<User>
     {
-        public MyContext(DbContextOptions options) : base(options) { }
-        // the "Monsters" table name will come from the DbSet variable name
-        public DbSet<User> Users { get; set; }
+        //Setup Context as normal
+        public MyContext(DbContextOptions options) : base(options){}
+        public DbSet<User> users { get; set; }
+        public DbSet<Instructor> Instructors { get; set; }
         public DbSet<Class> Classes { get; set; }
         public DbSet<RSVP> RSVPs { get; set; }
     }

@@ -40,12 +40,16 @@ namespace FitnessProject.Models
         [Display(Name = "Max # of People")]
         public int ClassSize { get; set; }
 
+        [Required]
+        [Display(Name = "Class Photo")]
+        public string ClassPhoto { get; set; }
+
         public DateTime CreatedAt { get; set; } = DateTime.Now;
         public DateTime UpdatedAt { get; set; } = DateTime.Now;
         // foreign key
-        public int UserId { get; set; }
+        public int InstructorId { get; set; }
         // navigational property
-        public User Instructor { get; set; }
+        public Instructor Instructor { get; set; }
         // many to many
         public List<RSVP> Attending { get; set; }
     }

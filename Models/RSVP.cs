@@ -7,9 +7,9 @@ namespace FitnessProject.Models
         [Key]
         public int RSVPId { get; set; }
         // bring in all the foreign keys
-        public int UserId { get; set; }
+        public string UserId { get; set; }
         public User Attendee { get; set; }
         public int ClassId { get; set; }
-        public Class AttendeeOf { get; set; }
+        public Class Attending { get; set; }
     }
 }
