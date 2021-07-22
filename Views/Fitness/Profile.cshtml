@@ -7,31 +7,38 @@
             <div class="img-center"><img class="profile-pic" src="~/img/gympic.jpg" alt="@User.Identity.Name"></div>
             <div>
                 <h5 class="inline-block">Email:</h5>
-                <p class="inline-block">@Model.LoggedInstructor.User.Email</p>
+                <p class="inline-block">@Model.LoggedUser.Email</p>
             </div>
-            <div>
-                <h5 class="inline-block">Expertise:</h5>
-                <p class="inline-block">@Model.LoggedInstructor.Expertise</p>
-            </div>
-            <div>
-                <h5 class="inline-block">My Biography:</h5>
-                <p class="inline-block">@Model.LoggedInstructor.Biography</p>
-            </div>
-            <div>
-                <h5 class="inline-block">Start Date:</h5>
-                <p class="inline-block">filler</p>
-            </div>
+            @if(User.IsInRole("Instructor"))
+            {
+                <div>
+                    <h5 class="inline-block">Expertise:</h5>
+                    <p class="inline-block">@Model.LoggedInstructor.Expertise</p>
+                </div>
+                <div>
+                    <h5 class="inline-block">My Biography:</h5>
+                    <p class="inline-block">@Model.LoggedInstructor.Biography</p>
+                </div>
+                <div>
+                    <h5 class="inline-block">Start Date:</h5>
+                    <p class="inline-block">filler</p>
+                </div>
+            }
         </div>
         <div class="col-md-9 right-side">
             @if(User.IsInRole("Instructor"))
             {
                 <h3>Classes I'm Teaching:</h3>
+                @foreach(Class oneClass in Model.LoggedInstructor.Classes)
+                {
+                    <p>@oneClass.ClassName - @oneClass.ClassDate - @oneClass.ClassSize</p>
+                }
                 <a asp-action="NewClass" asp-controller="Fitness" class="btn btn-sm btn-success">New Class</a>
             }
             
             <h3>My RSVP'd Classes:</h3>
             <h3>My Class Punch Card:</h3>
-            <h5>random: @Model.LoggedInstructor.User.FirstName</h5>
+            <h5>random: @Model.LoggedUser.FirstName</h5>
         </div>
     </div>
 </div>
