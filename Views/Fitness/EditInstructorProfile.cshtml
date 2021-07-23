@@ -1,23 +1,21 @@
 @model Container
 
-<div class="container">
-    <h3>Edit Instructor Profile</h3>
-    <form asp-action="ProcessInstructor" asp-controller="Fitness" asp-route-id="@Model.LoggedInstructor.InstructorId" method="POST">
-        <div class="row">
-            <div class="col-md-4">
-                <label asp-for="@Model.LoggedInstructor.InstructorPhoto"></label>
-                <input asp-for="@Model.LoggedInstructor.InstructorPhoto"><br>
-                <span class="text-danger" asp-validation-for="@Model.LoggedInstructor.InstructorPhoto"></span>
-                <label asp-for="@Model.LoggedInstructor.Expertise"></label>
-                <input asp-for="@Model.LoggedInstructor.Expertise"><br>
-                <span class="text-danger" asp-validation-for="@Model.LoggedInstructor.Expertise"></span>
-            </div>
-            <div class="col-md-4">
-                <label asp-for="@Model.LoggedInstructor.Biography"></label>
-                <input asp-for="@Model.LoggedInstructor.Biography"><br>
-                <span class="text-danger" asp-validation-for="@Model.LoggedInstructor.Biography"></span>
-            </div>
+<h3>Edit Instructor Profile</h3>
+<form asp-action="ProcessInstructor" asp-controller="Fitness" asp-route-id="@Model.LoggedInstructor.InstructorId" method="POST">
+    <div class="row">
+        <div class="col-md-4">
+            <label class="form-label" asp-for="@Model.LoggedInstructor.InstructorPhoto"></label>
+            <input class="form-control" asp-for="@Model.LoggedInstructor.InstructorPhoto"><br>
+            <span class="text-danger" asp-validation-for="@Model.LoggedInstructor.InstructorPhoto"></span>
+            <label class="form-label" asp-for="@Model.LoggedInstructor.Expertise"></label>
+            <input class="form-control" asp-for="@Model.LoggedInstructor.Expertise"><br>
+            <span class="text-danger" asp-validation-for="@Model.LoggedInstructor.Expertise"></span>
         </div>
-        <button type="submit" class="btn btn-sm btn-success">Edit</button>
-    </form>
-</div>
+        <div class="col-md-4">
+            <label class="form-label" asp-for="@Model.LoggedInstructor.Biography"></label>
+            <input class="form-control" asp-for="@Model.LoggedInstructor.Biography"><br>
+            <span class="text-danger" asp-validation-for="@Model.LoggedInstructor.Biography"></span>
+        </div>
+    </div>
+    <button type="submit" class="btn btn-sm btn-success">Edit</button>
+</form>
