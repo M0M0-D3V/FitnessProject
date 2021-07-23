@@ -33,11 +33,11 @@
                     <a asp-action="UnRSVP" asp-controller="Fitness" asp-route-classId="@Model.Class.ClassId"><button
                     class="btn btn-sm btn-warning">Leave</button></a>
                 }
-            }
-            else
-            {
-                <a asp-action="RSVP" asp-controller="Fitness" asp-route-classId="@Model.Class.ClassId"><button
-                    class="btn btn-sm btn-primary">Join</button></a>
+                else
+                {
+                    <a asp-action="RSVP" asp-controller="Fitness" asp-route-classId="@Model.Class.ClassId"><button
+                        class="btn btn-sm btn-primary">Join</button></a>
+                }
             }
         }
     </div>
