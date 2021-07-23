@@ -61,6 +61,7 @@ html {
 body {
   /* Margin bottom by footer height */
   margin-bottom: 60px;
+  background-color: rgba(248, 247, 253, 0.692);
 }
 .footer {
   position: absolute;
@@ -119,4 +120,9 @@ div.img-center {
   object-fit: cover;
   object-position: 50% 50%;
   border-radius: 15px;
+}
+
+.container {
+  background-color: white;
+  border-radius: 5px;
 }
