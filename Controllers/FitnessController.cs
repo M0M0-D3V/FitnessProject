@@ -51,7 +51,9 @@ namespace FitnessProject.Controllers
         {
             string UserId = _userManager.GetUserId(User);
             Container container = new Container();
-            container.LoggedUser = _db.users.FirstOrDefault(x => x.Id == UserId);
+            container.LoggedUser = _db.users
+            .Include(u => u.MyRSVPs)
+            .FirstOrDefault(x => x.Id == UserId);
             // see if user is instructor
             Instructor teacher = _db.Instructors
             .Include(t => t.User)
@@ -140,7 +142,10 @@ namespace FitnessProject.Controllers
             Container container = new Container();
             container.LoggedUser = _db.users.FirstOrDefault(x => x.Id == UserId);
             container.LoggedInstructor = _db.Instructors.FirstOrDefault(t => t.UserId == UserId);
-            container.Class = _db.Classes.FirstOrDefault(w => w.ClassId == classId);
+            container.Class = _db.Classes
+            .Include(c => c.Instructor)
+            .ThenInclude(i => i.User)
+            .FirstOrDefault(w => w.ClassId == classId);
             container.AllRSVPs = _db.RSVPs
             .Where(r => r.ClassId == classId)
             .Include(r => r.Attendee)
@@ -148,6 +153,20 @@ namespace FitnessProject.Controllers
             .ThenInclude(u => u.Instructor)
             .ToList();
             return View(container);
+        }
+
+        [HttpGet("rsvp/{classId}")]
+        [Authorize(Roles = "Student, Instructor, Admin")]
+        public IActionResult RSVP(int classId)
+        {
+            string UserId = _userManager.GetUserId(User);
+            RSVP addRSVP = new RSVP();
+            addRSVP.UserId = UserId;
+            addRSVP.ClassId = classId;
+            _db.RSVPs.Add(addRSVP);
+            _db.SaveChanges();
+            Console.WriteLine($"Successfully Joined class id {classId}");
+            return RedirectToAction("OneClass", "Fitness", classId);
         }
     }
 }

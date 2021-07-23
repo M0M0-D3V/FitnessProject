@@ -24,13 +24,13 @@
                 if (@Model.Class.Attending.Any(a => a.UserId == Model.LoggedUser.Id))
                 {
                     <a asp-action="UnRSVP" asp-controller="Fitness" asp-route-classId="@Model.Class.ClassId"><button
-                    class="btn btn-sm btn-warning">Un-RSVP</button></a>
+                    class="btn btn-sm btn-warning">Leave</button></a>
                 }
             }
             else
             {
                 <a asp-action="RSVP" asp-controller="Fitness" asp-route-classId="@Model.Class.ClassId"><button
-                    class="btn btn-sm btn-primary">RSVP</button></a>
+                    class="btn btn-sm btn-primary">Join</button></a>
             }
         }
     </div>

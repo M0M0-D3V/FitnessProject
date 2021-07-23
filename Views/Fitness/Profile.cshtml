@@ -27,6 +27,11 @@
                 <a class="instructor-link" asp-action="EditInstructorProfile" asp-controller="Fitness"
                 asp-route-id="@Model.LoggedInstructor.InstructorId">Edit Instructor Profile</a>
             }
+            else
+            {
+                <div class="img-center"><img class="profile-pic" src="~/img/gympic.jpg"
+                    alt="@User.Identity.Name"></div>
+            }
         </div>
         <div class="col-md-9 right-side">
             @if (User.IsInRole("Instructor"))
@@ -39,9 +44,8 @@
                 <a asp-action="NewClass" asp-controller="Fitness" class="btn btn-sm btn-success">New Class</a>
             }
 
-            <h3>My RSVP'd Classes:</h3>
+            <h3>My Classes:</h3>
             <h3>My Class Punch Card:</h3>
-            <h5>random: @Model.LoggedUser.FirstName</h5>
         </div>
     </div>
 </div>
