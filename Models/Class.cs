@@ -44,6 +44,9 @@ namespace FitnessProject.Models
         [Display(Name = "Class Photo")]
         public string ClassPhoto { get; set; }
 
+        [Display(Name = "Class Video")]
+        public string ClassVideo { get; set; }
+
         public DateTime CreatedAt { get; set; } = DateTime.Now;
         public DateTime UpdatedAt { get; set; } = DateTime.Now;
         // foreign key

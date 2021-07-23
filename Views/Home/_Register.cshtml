@@ -1,52 +1,50 @@
 @model RegisterViewModel
 
-<div class="container my-5" style="width: 600px;">
-    <div class="card">
-        <div class="card-body border border-2">
-            <h3 class="card-title mb-3">Register New User</h3>
+<div class="card">
+    <div class="card-body border border-2">
+        <h3 class="card-title mb-3">Register New User</h3>
 
-            @if (ViewBag.Count > 0)
-            {
-                <div asp-validation-summary="All" class="alert alert-danger" role="alert"></div>
-            }
+        @if (ViewBag.Count > 0)
+        {
+            <div asp-validation-summary="All" class="alert alert-danger" role="alert"></div>
+        }
 
-            <form asp-action="UserRegister" asp-controller="Home" method="POST">
+        <form asp-action="UserRegister" asp-controller="Home" method="POST">
 
-                <div class="col mb-3">
-                    <label class="form-label" asp-for="FirstName"></label>
-                    <input class="form-control" asp-for="FirstName">
-                    <span class="text-danger" asp-validation-for="FirstName"></span>
-                </div>
+            <div class="col mb-3">
+                <label class="form-label" asp-for="FirstName"></label>
+                <input class="form-control" asp-for="FirstName">
+                <span class="text-danger" asp-validation-for="FirstName"></span>
+            </div>
 
-                <div class="col mb-3">
-                    <label class="form-label" asp-for="LastName"></label>
-                    <input class="form-control" asp-for="LastName">
-                    <span class="text-danger" asp-validation-for="LastName"></span>
-                </div>
+            <div class="col mb-3">
+                <label class="form-label" asp-for="LastName"></label>
+                <input class="form-control" asp-for="LastName">
+                <span class="text-danger" asp-validation-for="LastName"></span>
+            </div>
 
-                <div class="col mb-3">
-                    <label class="form-label" asp-for="Email"></label>
-                    <input class="form-control" asp-for="Email">
-                    <span class="text-danger" asp-validation-for="Email"></span>
-                </div>
+            <div class="col mb-3">
+                <label class="form-label" asp-for="Email"></label>
+                <input class="form-control" asp-for="Email">
+                <span class="text-danger" asp-validation-for="Email"></span>
+            </div>
 
-                <div class="col mb-3">
-                    <label class="form-label" asp-for="Password"></label>
-                    <input class="form-control" asp-for="Password">
-                    <span class="text-danger" asp-validation-for="Password"></span>
-                </div>
+            <div class="col mb-3">
+                <label class="form-label" asp-for="Password"></label>
+                <input class="form-control" asp-for="Password">
+                <span class="text-danger" asp-validation-for="Password"></span>
+            </div>
 
-                <div class="col mb-3">
-                    <label class="form-label" asp-for="ConfirmPassword"></label>
-                    <input class="form-control" asp-for="ConfirmPassword">
-                    <span class="text-danger" asp-validation-for="ConfirmPassword"></span>
-                </div>
+            <div class="col mb-3">
+                <label class="form-label" asp-for="ConfirmPassword"></label>
+                <input class="form-control" asp-for="ConfirmPassword">
+                <span class="text-danger" asp-validation-for="ConfirmPassword"></span>
+            </div>
 
-                <div class="col text-end">
-                    <input value="Register" type="submit" class="btn btn-primary">
-                </div>
+            <div class="col text-end">
+                <input value="Register" type="submit" class="btn btn-primary">
+            </div>
 
-            </form>
-        </div>
+        </form>
     </div>
 </div>
