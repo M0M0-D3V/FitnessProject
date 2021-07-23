@@ -1,0 +1,8 @@
+@model Container
+
+<div class="container">
+    <h3>Edit Class: @Model.Class.ClassName</h3>
+    <form asp-action="UpdateClass" asp-controller="Fitness" asp-route-classId="@Model.Class.ClassId" method="POST">
+        <partial name="_ClassFormPartial" />
+    </form>
+</div>

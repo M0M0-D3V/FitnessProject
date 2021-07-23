@@ -148,3 +148,5 @@ C:\Users\mimi_\Documents\Projects\FitnessProject\obj\Debug\netcoreapp3.1\Razor\V
 C:\Users\mimi_\Documents\Projects\FitnessProject\obj\Debug\netcoreapp3.1\Razor\Views\Home\_InstructorRegister.cshtml.g.cs
 C:\Users\mimi_\Documents\Projects\FitnessProject\obj\Debug\netcoreapp3.1\Razor\Views\Fitness\Profile.cshtml.g.cs
 C:\Users\mimi_\Documents\Projects\FitnessProject\obj\Debug\netcoreapp3.1\Razor\Views\Fitness\EditInstructorProfile.cshtml.g.cs
+C:\Users\mimi_\Documents\Projects\FitnessProject\obj\Debug\netcoreapp3.1\Razor\Views\Fitness\_ClassFormPartial.cshtml.g.cs
+C:\Users\mimi_\Documents\Projects\FitnessProject\obj\Debug\netcoreapp3.1\Razor\Views\Fitness\EditClass.cshtml.g.cs

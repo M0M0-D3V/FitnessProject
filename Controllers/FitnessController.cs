@@ -39,6 +39,7 @@ namespace FitnessProject.Controllers
             container.LoggedUser = _db.users.FirstOrDefault(x => x.Id == UserId);
             container.AllClasses = _db.Classes
             .Include(c => c.Instructor)
+            .ThenInclude(i => i.User)
             .Include(w => w.Attending)
             .ThenInclude(u => u.Attendee)
             .ToList();
@@ -91,6 +92,18 @@ namespace FitnessProject.Controllers
             return View(container);
         }
 
+        [HttpGet("class/{classId}/edit")]
+        [Authorize(Roles = "Instructor, Admin")]
+        public IActionResult EditClass(int classId)
+        {
+            string UserId = _userManager.GetUserId(User);
+            Container container = new Container();
+            container.LoggedUser = _db.users.FirstOrDefault(x => x.Id == UserId);
+            container.LoggedInstructor = _db.Instructors.FirstOrDefault(t => t.UserId == UserId);
+            container.Class = _db.Classes.FirstOrDefault(c => c.ClassId == classId);
+            return View(container);
+        }
+
         [HttpPost("processclass")]
         [Authorize(Roles = "Instructor, Admin")]
         public IActionResult ProcessClass(Container fromForm)
@@ -119,6 +132,14 @@ namespace FitnessProject.Controllers
             fromForm.LoggedUser = u;
             // show a view with a form
             return View("NewClass", fromForm);
+        }
+
+        [HttpPost("class/{classId}/update")]
+        [Authorize(Roles = "Instructor, Admin")]
+        public IActionResult UpdateClass(Container fromForm, int classId)
+        {
+            Console.WriteLine("made it to post update class");
+            return RedirectToAction("Dashboard", "Fitness");
         }
 
         [HttpPost("process-instructor/{id}")]
@@ -157,7 +178,7 @@ namespace FitnessProject.Controllers
 
         [HttpGet("class/{classId}/delete")]
         [Authorize(Roles = "Student, Instructor, Admin")]
-        public IActionResult Delete(int classId)
+        public IActionResult DeleteClass(int classId)
         {
             string UserId = _userManager.GetUserId(User);
             Instructor teacher = _db.Instructors.FirstOrDefault(t => t.UserId == UserId);

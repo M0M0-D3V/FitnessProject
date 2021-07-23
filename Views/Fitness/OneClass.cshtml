@@ -20,9 +20,9 @@
             {
                 if (Model.Class.InstructorId == Model.LoggedInstructor.InstructorId)
                 {
-                    <a asp-action="Edit" asp-controller="Fitness" asp-route-ClassId="@Model.Class.ClassId"
+                    <a asp-action="EditClass" asp-controller="Fitness" asp-route-classId="@Model.Class.ClassId"
             class="btn btn-sm btn-warning">Edit Class</a>
-                    <a asp-action="Delete" asp-controller="Fitness" asp-route-ClassId="@Model.Class.ClassId"
+                    <a asp-action="DeleteClass" asp-controller="Fitness" asp-route-classId="@Model.Class.ClassId"
             class="btn btn-sm btn-danger">Delete</a>
                 }
             }
