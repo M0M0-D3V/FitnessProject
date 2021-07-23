@@ -18,7 +18,8 @@
         @{
             if (User.IsInRole("Instructor"))
             {
-                if (Model.Class.InstructorId == Model.LoggedInstructor.InstructorId)
+                int myInsId = Model.LoggedInstructor.InstructorId;
+                if (Model.Class.InstructorId == myInsId)
                 {
                     <a asp-action="EditClass" asp-controller="Fitness" asp-route-classId="@Model.Class.ClassId"
             class="btn btn-sm btn-warning">Edit Class</a>
@@ -26,18 +27,18 @@
             class="btn btn-sm btn-danger">Delete</a>
                 }
             }
-            if (@Model.Class.Attending != null)
+            if (@Model.Class.Attending != null && Model.Class.Instructor.User.Id != Model.LoggedUser.Id)
             {
                 if (@Model.Class.Attending.Any(a => a.UserId == Model.LoggedUser.Id))
                 {
                     <a asp-action="UnRSVP" asp-controller="Fitness" asp-route-classId="@Model.Class.ClassId"><button
                     class="btn btn-sm btn-warning">Leave</button></a>
                 }
-                else
-                {
-                    <a asp-action="RSVP" asp-controller="Fitness" asp-route-classId="@Model.Class.ClassId"><button
-                        class="btn btn-sm btn-primary">Join</button></a>
-                }
+            }
+            else if(Model.Class.Instructor.User.Id != Model.LoggedUser.Id)
+            {
+                <a asp-action="RSVP" asp-controller="Fitness" asp-route-classId="@Model.Class.ClassId"><button
+                    class="btn btn-sm btn-primary">Join</button></a>
             }
         }
     </div>
