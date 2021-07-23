@@ -14477,6 +14477,11 @@
       "FileKind": "mvc"
     },
     {
+      "FilePath": "c:\\Users\\mimi_\\Documents\\Projects\\FitnessProject\\Views\\Fitness\\MyClasses.cshtml",
+      "TargetPath": "Views\\Fitness\\MyClasses.cshtml",
+      "FileKind": "mvc"
+    },
+    {
       "FilePath": "c:\\Users\\mimi_\\Documents\\Projects\\FitnessProject\\Views\\Shared\\_ValidationScriptsPartial.cshtml",
       "TargetPath": "Views\\Shared\\_ValidationScriptsPartial.cshtml",
       "FileKind": "mvc"
