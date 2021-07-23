@@ -27,18 +27,26 @@
             class="btn btn-sm btn-danger">Delete</a>
                 }
             }
-            if (@Model.Class.Attending != null && Model.Class.Instructor.User.Id != Model.LoggedUser.Id)
+            if(Model.Class.Instructor.User.Id != Model.LoggedUser.Id)
             {
-                if (@Model.Class.Attending.Any(a => a.UserId == Model.LoggedUser.Id))
+                if (@Model.Class.Attending != null)
                 {
-                    <a asp-action="UnRSVP" asp-controller="Fitness" asp-route-classId="@Model.Class.ClassId"><button
-                    class="btn btn-sm btn-warning">Leave</button></a>
+                    if (@Model.Class.Attending.Any(a => a.UserId == Model.LoggedUser.Id))
+                    {
+                        <a asp-action="UnRSVP" asp-controller="Fitness" asp-route-classId="@Model.Class.ClassId"><button
+                        class="btn btn-sm btn-warning">Leave</button></a>
+                    }
+                    else if(@Model.Class.Attending.Count < @Model.Class.ClassSize)
+                    {
+                        <a asp-action="RSVP" asp-controller="Fitness" asp-route-classId="@Model.Class.ClassId"><button
+                            class="btn btn-sm btn-primary">Join</button></a>
+                    }
+                    else
+                    {
+                        <button class="btn btn-sm btn-secondary" disabled>Join</button>
+                        <p class="text-danger">This class has reached maximum capacity. Please try another class</p>
+                    }
                 }
-            }
-            else if(Model.Class.Instructor.User.Id != Model.LoggedUser.Id)
-            {
-                <a asp-action="RSVP" asp-controller="Fitness" asp-route-classId="@Model.Class.ClassId"><button
-                    class="btn btn-sm btn-primary">Join</button></a>
             }
         }
     </div>

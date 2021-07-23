@@ -117,8 +117,6 @@ namespace FitnessProject.Controllers
             }
             if (ModelState.IsValid)
             {
-                Console.WriteLine("made it to 96");
-
                 // all is good
                 Instructor teacher = _db.Instructors.FirstOrDefault(t => t.UserId == UserId);
                 Console.WriteLine($"Instructor ID: {teacher.InstructorId}");
