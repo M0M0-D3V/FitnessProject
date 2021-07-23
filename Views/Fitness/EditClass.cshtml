@@ -1,6 +1,9 @@
 @model Container
 
 <div class="container">
+<div class="row">
+    <div class="col-md-12 div-class-photo"><img src="@Model.Class.ClassPhoto" alt="@Model.Class.ClassName"></div>
+</div>
     <h3>Edit Class: @Model.Class.ClassName</h3>
     <form asp-action="UpdateClass" asp-controller="Fitness" asp-route-classId="@Model.Class.ClassId" method="POST">
         <partial name="_ClassFormPartial" />
