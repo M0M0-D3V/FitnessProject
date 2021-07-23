@@ -168,5 +168,17 @@ namespace FitnessProject.Controllers
             Console.WriteLine($"Successfully Joined class id {classId}");
             return RedirectToAction("OneClass", "Fitness", classId);
         }
+
+        [HttpGet("un-rsvp/{classId}")]
+        [Authorize(Roles = "Student, Instructor, Admin")]
+        public IActionResult UnRSVP(int classId)
+        {
+            string UserId = _userManager.GetUserId(User);
+            RSVP delRSVP = _db.RSVPs.FirstOrDefault(r => r.ClassId == classId && r.UserId == UserId);
+            _db.RSVPs.Remove(delRSVP);
+            _db.SaveChanges();
+            Console.WriteLine($"Successfully Left class id {classId}");
+            return RedirectToAction("OneClass", "Fitness", classId);
+        }
     }
 }
