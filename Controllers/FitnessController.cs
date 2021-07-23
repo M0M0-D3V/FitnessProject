@@ -136,8 +136,22 @@ namespace FitnessProject.Controllers
         [Authorize(Roles = "Instructor, Admin")]
         public IActionResult UpdateClass(Container fromForm, int classId)
         {
-            Console.WriteLine("made it to post update class");
-            return RedirectToAction("Dashboard", "Fitness");
+            string UserId = _userManager.GetUserId(User);
+            Console.WriteLine(fromForm.Class.ClassDate);
+            if (fromForm.Class.ClassDate < DateTime.Now)
+            {
+                ModelState.AddModelError("Class.ClassDate", "Class Date must be in the future");
+            }
+            if (ModelState.IsValid)
+            {
+                return RedirectToAction("Dashboard", "Fitness");
+            }
+            Container container = new Container();
+            User u = _db.users.FirstOrDefault(u => u.Id == UserId);
+            container.LoggedUser = u;
+            container.LoggedInstructor = _db.Instructors.FirstOrDefault(t => t.UserId == UserId);
+            container.Class = _db.Classes.FirstOrDefault(c => c.ClassId == classId);
+            return View("EditClass", container);
         }
 
         [HttpPost("process-instructor/{id}")]
