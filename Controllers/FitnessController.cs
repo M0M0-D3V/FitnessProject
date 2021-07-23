@@ -37,11 +37,21 @@ namespace FitnessProject.Controllers
             string UserId = _userManager.GetUserId(User);
             Container container = new Container();
             container.LoggedUser = _db.users.FirstOrDefault(x => x.Id == UserId);
+            Instructor teacher = _db.Instructors
+            .Include(t => t.User)
+            .Include(t => t.Classes)
+            .FirstOrDefault(t => t.UserId == UserId);
+            if(teacher != null)
+            {
+                container.LoggedInstructor = teacher;
+            }
             container.AllClasses = _db.Classes
             .Include(c => c.Instructor)
             .ThenInclude(i => i.User)
             .Include(w => w.Attending)
             .ThenInclude(u => u.Attendee)
+            .OrderBy(o => o.ClassDate)
+            .ThenBy(o => o.StartTime)
             .ToList();
             return View(container);
         }
@@ -68,6 +78,33 @@ namespace FitnessProject.Controllers
             .Include(c => c.Instructor)
             .Include(w => w.Attending)
             .ThenInclude(u => u.Attendee)
+            .ToList();
+            return View(container);
+        }
+
+        [HttpGet("myclasses")]
+        [Authorize(Roles = "Student, Instructor, Admin")]
+        public IActionResult MyClasses()
+        {
+            string UserId = _userManager.GetUserId(User);
+            Container container = new Container();
+            container.LoggedUser = _db.users
+            .FirstOrDefault(x => x.Id == UserId);
+            // see if user is instructor
+            Instructor teacher = _db.Instructors
+            .Include(t => t.User)
+            .Include(t => t.Classes)
+            .FirstOrDefault(t => t.UserId == UserId);
+            if(teacher != null)
+            {
+                container.LoggedInstructor = teacher;
+            }
+            container.AllClasses = _db.Classes
+            .Include(c => c.Instructor)
+            .ThenInclude(i => i.User)
+            .Include(w => w.Attending)
+            .ThenInclude(u => u.Attendee)
+            .Where(a => a.Attending.Any(a => a.UserId == UserId))
             .ToList();
             return View(container);
         }
@@ -144,7 +181,18 @@ namespace FitnessProject.Controllers
             }
             if (ModelState.IsValid)
             {
-                return RedirectToAction("Dashboard", "Fitness");
+                Class thisClass = _db.Classes.FirstOrDefault(c => c.ClassId == classId);
+                thisClass.ClassName = fromForm.Class.ClassName;
+                thisClass.ClassDescription = fromForm.Class.ClassDescription;
+                thisClass.ClassDate = fromForm.Class.ClassDate;
+                thisClass.StartTime = fromForm.Class.StartTime;
+                thisClass.EndTime = fromForm.Class.EndTime;
+                thisClass.Location = fromForm.Class.Location;
+                thisClass.ClassSize = fromForm.Class.ClassSize;
+                thisClass.ClassPhoto = fromForm.Class.ClassPhoto;
+                thisClass.ClassVideo = fromForm.Class.ClassVideo;
+                _db.SaveChanges();
+                return RedirectToAction("OneClass", "Fitness", classId);
             }
             Container container = new Container();
             User u = _db.users.FirstOrDefault(u => u.Id == UserId);

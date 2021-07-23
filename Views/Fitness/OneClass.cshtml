@@ -43,15 +43,15 @@
                     }
                     else
                     {
-                        <button class="btn btn-sm btn-secondary" disabled>Join</button>
-                        <p class="text-danger">This class has reached maximum capacity. Please try another class</p>
+                        <button class="btn btn-sm btn-secondary" disabled data-toggle="tooltip" data-placement="top"
+                title="This class has reached maximum capacity. Please try another class">Join</button>
                     }
                 }
             }
         }
     </div>
-    <div class="col-md-6">
-        <p>Placeholder for video</p>
+    <div class="col-md-6 youtube-video-container">
+        <iframe width="560" height="315" src="@Model.Class.ClassVideo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
     </div>
     
 </div>

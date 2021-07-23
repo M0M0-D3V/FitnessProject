@@ -4,7 +4,7 @@
 ---
 ## General User
 ### - P0
-- [] see list of classes available and able to Join/Leave
+- [x] see list of classes available and able to Join/Leave
 - [x] see Class detail page and can Join/Leave from there also
 - [] track their workouts daily by creating Workout Logs
 - [] MyClasses page has a list of upcoming and past classes in ascending order
@@ -23,14 +23,14 @@
 ---
 ## Instructor Level
 ### - P0
-- [] Profile has their info and list of classes they offer
-- [] can create new classes from profile and on dashboard
+- [x] Profile has their info and list of classes they offer
+- [x] can create new classes from profile and on dashboard
 - [x] can delete their own classes
-- [] can edit their own classes
+- [x] can edit their own classes
 - [x] can Join/Leave other instructor classes
-- [] all other abilities as User
+- [x] all other abilities as User
 - [] past classes are archived
-- [] can add video of classes
+- [x] can link youtube video of classes
 - [] can create class playlist
 ---
 ### Admin Level
