@@ -155,7 +155,23 @@ namespace FitnessProject.Controllers
             return View(container);
         }
 
-        [HttpGet("rsvp/{classId}")]
+        [HttpGet("class/{classId}/delete")]
+        [Authorize(Roles = "Student, Instructor, Admin")]
+        public IActionResult Delete(int classId)
+        {
+            string UserId = _userManager.GetUserId(User);
+            Instructor teacher = _db.Instructors.FirstOrDefault(t => t.UserId == UserId);
+            if(teacher != null)
+            {
+                Class delClass = _db.Classes.FirstOrDefault(c => c.ClassId == classId && c.InstructorId == teacher.InstructorId);
+                _db.Classes.Remove(delClass);
+                _db.SaveChanges();
+            }
+            Console.WriteLine($"Successfully Deleted class id {classId}");
+            return RedirectToAction("Dashboard", "Fitness");
+        }
+
+        [HttpGet("class/{classId}/rsvp")]
         [Authorize(Roles = "Student, Instructor, Admin")]
         public IActionResult RSVP(int classId)
         {
@@ -169,7 +185,7 @@ namespace FitnessProject.Controllers
             return RedirectToAction("OneClass", "Fitness", classId);
         }
 
-        [HttpGet("un-rsvp/{classId}")]
+        [HttpGet("class/{classId}/un-rsvp")]
         [Authorize(Roles = "Student, Instructor, Admin")]
         public IActionResult UnRSVP(int classId)
         {
