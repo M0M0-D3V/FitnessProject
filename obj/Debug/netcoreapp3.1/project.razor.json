@@ -14412,6 +14412,11 @@
       "FileKind": "mvc"
     },
     {
+      "FilePath": "c:\\Users\\mimi_\\Documents\\Projects\\FitnessProject\\Views\\Fitness\\InstructorInfo.cshtml",
+      "TargetPath": "Views\\Fitness\\InstructorInfo.cshtml",
+      "FileKind": "mvc"
+    },
+    {
       "FilePath": "c:\\Users\\mimi_\\Documents\\Projects\\FitnessProject\\Views\\Home\\_AdminLogin.cshtml",
       "TargetPath": "Views\\Home\\_AdminLogin.cshtml",
       "FileKind": "mvc"

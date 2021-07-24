@@ -20,7 +20,8 @@
         <tr>
             <td><a asp-action="OneClass" asp-controller="Fitness"
                 asp-route-classId="@fitclass.ClassId" data-toggle="tooltip" data-placement="top" title="see more info about this class">@fitclass.ClassName</a></td>
-            <td>@fitclass.Instructor.User.FirstName</td>
+            <td><a asp-controller="Fitness" asp-action="InstructorInfo" asp-route-insId="@fitclass.InstructorId" data-toggle="tooltip" data-placement="top"
+                title="see more info about this instructor">@fitclass.Instructor.User.FirstName</a></td>
             <td>@fitclass.ClassDate.ToString("m")</td>
             <td>@fitclass.StartTime.ToString("t")</td>
             <td>@fitclass.EndTime.ToString("t")</td>

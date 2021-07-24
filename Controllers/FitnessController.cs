@@ -120,6 +120,20 @@ namespace FitnessProject.Controllers
             return View(container);
         }
 
+        [HttpGet("instructor/{insId}")]
+        [Authorize(Roles = "Student, Instructor, Admin")]
+        public IActionResult InstructorInfo(int insId)
+        {
+            string UserId = _userManager.GetUserId(User);
+            Container container = new Container();
+            container.LoggedUser = _db.users
+            .FirstOrDefault(x => x.Id == UserId);
+            container.Instructor = _db.Instructors
+            .Include(i => i.User)
+            .FirstOrDefault(i => i.InstructorId == insId);
+            return View(container);
+        }
+
         [HttpGet("edit-instructor/{id}")]
         [Authorize(Roles = "Instructor, Admin")]
         public IActionResult EditInstructorProfile(int id)
