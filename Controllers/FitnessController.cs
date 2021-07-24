@@ -104,7 +104,16 @@ namespace FitnessProject.Controllers
             .ThenInclude(i => i.User)
             .Include(w => w.Attending)
             .ThenInclude(u => u.Attendee)
-            .Where(a => a.Attending.Any(a => a.UserId == UserId))
+            .Where(a => a.Attending.Any(a => a.UserId == UserId) && a.ClassDate > DateTime.Now)
+            .OrderBy(d => d.ClassDate)
+            .ThenBy(t => t.StartTime)
+            .ToList();
+            container.PastClasses = _db.Classes
+            .Include(c => c.Instructor)
+            .ThenInclude(i => i.User)
+            .Include(w => w.Attending)
+            .ThenInclude(u => u.Attendee)
+            .Where(a => a.Attending.Any(a => a.UserId == UserId) && a.ClassDate < DateTime.Now)
             .OrderBy(d => d.ClassDate)
             .ThenBy(t => t.StartTime)
             .ToList();
@@ -277,7 +286,7 @@ namespace FitnessProject.Controllers
             _db.RSVPs.Remove(delRSVP);
             _db.SaveChanges();
             Console.WriteLine($"Successfully Left class id {classId}");
-            return RedirectToAction("OneClass", "Fitness", classId);
+            return RedirectToAction("Dashboard", "Fitness");
         }
     }
 }
