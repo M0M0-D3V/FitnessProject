@@ -130,6 +130,7 @@ namespace FitnessProject.Controllers
             .FirstOrDefault(x => x.Id == UserId);
             container.Instructor = _db.Instructors
             .Include(i => i.User)
+            .Include(c => c.Classes)
             .FirstOrDefault(i => i.InstructorId == insId);
             return View(container);
         }

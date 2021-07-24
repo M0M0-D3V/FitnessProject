@@ -1,7 +1,10 @@
 @model Container
+
+@{
+    string image = Model.GetImage("hero");
+}
 <div class="div-class-photo">
-    <img src="https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fweneedfun.com%2Fwp-content%2Fuploads%2F2016%2F12%2FFitness-Wallpapers-HD-6.jpg&f=1&nofb=1"
-        alt="backgroundphoto">
+    <img src="~/img/hero/@image" alt="backgroundphoto">
 </div>
 <table class="table table-striped table-light">
     <thead>

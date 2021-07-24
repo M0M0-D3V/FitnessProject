@@ -8,7 +8,7 @@
 - [x] see Class detail page and can Join/Leave from there also
 - [x] MyClasses page has a list of upcoming ascending order
 - [x] MyClasses page has option to Leave
-- [] MyClasses shows list of past classes 
+- [x] MyClasses shows list of past classes 
 - [] view Instructor detail page with info and classes
 ### - P1
 - [] Watch or Favorite a class or instructor
