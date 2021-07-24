@@ -105,6 +105,8 @@ namespace FitnessProject.Controllers
             .Include(w => w.Attending)
             .ThenInclude(u => u.Attendee)
             .Where(a => a.Attending.Any(a => a.UserId == UserId))
+            .OrderBy(d => d.ClassDate)
+            .ThenBy(t => t.StartTime)
             .ToList();
             return View(container);
         }
