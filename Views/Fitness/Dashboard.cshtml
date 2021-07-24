@@ -60,6 +60,11 @@
                 title="This class has reached maximum capacity. Please try another class">Join</button>
                             }
                         }
+                        else
+                        {
+                            <a asp-action="RSVP" asp-controller="Fitness" asp-route-classId="@Model.Class.ClassId"><button
+                                class="btn btn-sm btn-primary">Join</button></a>
+                        }
                     }
                 }
             </td>
