@@ -8,6 +8,7 @@
     <div class="col-md-6">
         <h1>@Model.Class.ClassName with @Model.Class.Instructor.User.FirstName</h1>
         <h5>Class Date: @Model.Class.ClassDate.ToString("MMMM dd yyy")</h5>
+        <p>@Model.Class.ClassDescription</p>
         <h5>Guests:</h5>
         <ul>
             @foreach (var rsvp in Model.AllRSVPs)
@@ -15,6 +16,10 @@
                 <li>@rsvp.Attendee.FirstName @rsvp.Attendee.LastName</li>
             }
         </ul>
+        @{
+            int open = Model.Class.ClassSize - Model.Class.Attending.Count;
+        }
+        <h5>Spots Remaining: @open</h5>
         @{
             if (User.IsInRole("Instructor"))
             {
@@ -46,6 +51,11 @@
                         <button class="btn btn-sm btn-secondary" disabled data-toggle="tooltip" data-placement="top"
                 title="This class has reached maximum capacity. Please try another class">Join</button>
                     }
+                }
+                else
+                {
+                    <a asp-action="RSVP" asp-controller="Fitness" asp-route-classId="@Model.Class.ClassId"><button
+                        class="btn btn-sm btn-primary">Join</button></a>
                 }
             }
         }

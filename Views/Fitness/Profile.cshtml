@@ -19,10 +19,6 @@
                 <h5 class="inline-block">My Biography:</h5>
                 <p class="inline-block">@Model.LoggedInstructor.Biography</p>
             </div>
-            <div>
-                <h5 class="inline-block">Start Date:</h5>
-                <p class="inline-block">filler</p>
-            </div>
             <a class="instructor-link" asp-action="EditInstructorProfile" asp-controller="Fitness"
             asp-route-id="@Model.LoggedInstructor.InstructorId">Edit Instructor Profile</a>
         }

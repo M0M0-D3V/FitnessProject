@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using FitnessProject.Models;
+using FitnessProject.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -45,6 +46,9 @@ namespace FitnessProject
 
             services.AddMvc(options => options.EnableEndpointRouting = false);
             services.AddAuthentication();
+
+            services.AddScoped<IFitnessService, FitnessService>();
+            services.AddScoped<IInstructorService, InstructorService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
