@@ -9,7 +9,7 @@
 - [x] MyClasses page has a list of upcoming ascending order
 - [x] MyClasses page has option to Leave
 - [x] MyClasses shows list of past classes 
-- [] view Instructor detail page with info and classes
+- [x] view Instructor detail page with info and classes
 ### - P1
 - [] Watch or Favorite a class or instructor
 - [] Profile shows all the classes and instructors they favorited
