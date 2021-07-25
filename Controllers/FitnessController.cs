@@ -106,8 +106,6 @@ namespace FitnessProject.Controllers
         [Authorize(Roles = "Student, Instructor, Admin")]
         public IActionResult InstructorInfo(int insId)
         {
-            string UserId = _userManager.GetUserId(User);
-            Container container = new Container();
             container.LoggedUser = _db.users
             .FirstOrDefault(x => x.Id == UserId);
             container.Instructor = _db.Instructors
