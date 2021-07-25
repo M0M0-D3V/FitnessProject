@@ -18,6 +18,9 @@ namespace FitnessProject.Controllers
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
         private MyContext _db;
+        private string UserId{
+            get { return _userManager.GetUserId(User);}
+        }
         public HomeController(MyContext context, UserManager<User> userManager, SignInManager<User> signInManager, RoleManager<IdentityRole> roleMgr)
         {
             _db = context;
@@ -43,9 +46,6 @@ namespace FitnessProject.Controllers
         [AllowAnonymous]
         public IActionResult Signin(string returnUrl)
         {
-            var UserId = _userManager.GetUserId(User);
-            User user = _db.users.FirstOrDefault(u => u.Id == UserId);
-            var hasRole = _userManager.IsInRoleAsync(user, "Student");
             if (UserId != null)
             {
                 return RedirectToAction("Index", "Fitness");
@@ -58,9 +58,6 @@ namespace FitnessProject.Controllers
         [AllowAnonymous]
         public IActionResult InstructorSignin(string returnUrl)
         {
-            var UserId = _userManager.GetUserId(User);
-            User user = _db.users.FirstOrDefault(u => u.Id == UserId);
-            var hasRole = _userManager.IsInRoleAsync(user, "Instructor");
             if (UserId != null) return RedirectToAction("Index", "Fitness");
             ViewBag.ReturnUrl = returnUrl;
             ViewBag.Count = 0;
@@ -70,7 +67,6 @@ namespace FitnessProject.Controllers
         [AllowAnonymous]
         public IActionResult AdminSignin(string returnUrl)
         {
-            var UserId = _userManager.GetUserId(User);
             if (UserId != null) return RedirectToAction("Index", "Fitness");
             ViewBag.ReturnUrl = returnUrl;
             ViewBag.Count = 0;
@@ -82,7 +78,6 @@ namespace FitnessProject.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> UserLogin(LoginViewModel model, string returnUrl)
         {
-
             if (ModelState.IsValid)
             {
                 var user = await _userManager.FindByEmailAsync(email: model.LoginEmail);
@@ -105,7 +100,6 @@ namespace FitnessProject.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> InstructorLogin(LoginViewModel model, string returnUrl)
         {
-
             if (ModelState.IsValid)
             {
                 var user = await _userManager.FindByEmailAsync(email: model.LoginEmail);
@@ -137,7 +131,6 @@ namespace FitnessProject.Controllers
                 {
                     IdentityResult roleResult = await _roleManager.CreateAsync(new IdentityRole("Student"));
                 }
-
                 //Create a new User object, without adding a Password
                 User NewUser = new User { UserName = model.FirstName, Email = model.Email, FirstName = model.FirstName, LastName = model.LastName };
                 //CreateAsync will attempt to create the User in the database, simultaneously hashing the
