@@ -11,6 +11,7 @@ namespace FitnessProject.Services
         Instructor Create(Instructor fitclass, int tId);
         IEnumerable<Instructor> GetAll();
         Instructor GetById(int id);
+        Instructor GetLoggedInsById(string uId);
         Instructor Update(Instructor fitclass, int id);
         void Delete(int tId);
     }
@@ -28,7 +29,12 @@ namespace FitnessProject.Services
         }
         public IEnumerable<Instructor> GetAll()
         {
-            List<Instructor> allInstructors = new List<Instructor>();
+            List<Instructor> allInstructors = _db.Instructors
+            .Include(i => i.User)
+            .Include(i => i.Classes)
+            .ThenInclude(i => i.Attending)
+            .OrderBy(n => n.User.FirstName)
+            .ToList();
             return allInstructors;
         }
         public Instructor GetById(int id)
@@ -40,11 +46,22 @@ namespace FitnessProject.Services
             .FirstOrDefault(c => c.InstructorId == id);
             return getIns;
         }
-        public Instructor Update(Instructor fitclass, int id)
+        public Instructor GetLoggedInsById(string uId)
+        {
+            Instructor loggedIns = _db.Instructors
+            .Include(t => t.User)
+            .Include(t => t.Classes)
+            .FirstOrDefault(t => t.UserId == uId);
+            return loggedIns;
+        }
+        public Instructor Update(Instructor ins, int id)
         {
             Instructor getIns = GetById(id);
-            // stuff missing
+            getIns.InstructorPhoto = ins.InstructorPhoto;
+            getIns.Expertise = ins.Expertise;
+            getIns.Biography = ins.Biography;
             _db.SaveChanges();
+            Console.WriteLine("successfully updated");
             return getIns;
         }
         public void Delete(int tId)

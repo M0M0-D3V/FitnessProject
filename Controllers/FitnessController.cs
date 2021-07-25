@@ -17,18 +17,20 @@ namespace FitnessProject.Controllers
         private MyContext _db;
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
-        private IFitnessService _fitService;
+        private IFitnessService _fitSvc;
+        private IInstructorService _insSvc;
         Container container;
         private string UserId{
             get { return _userManager.GetUserId(User);}
         }
         // here we can "inject" our context service into the constructor
-        public FitnessController(MyContext context, UserManager<User> userManager, SignInManager<User> signInManager, IFitnessService fitService)
+        public FitnessController(MyContext context, UserManager<User> userManager, SignInManager<User> signInManager, IFitnessService fitService, IInstructorService insSvc)
         {
             _db = context;
             _userManager = userManager;
             _signInManager = signInManager;
-            _fitService = fitService;
+            _fitSvc = fitService;
+            _insSvc = insSvc;
             container = new Container();
         }
         
@@ -44,15 +46,12 @@ namespace FitnessProject.Controllers
         public IActionResult Dashboard()
         {
             container.LoggedUser = _db.users.FirstOrDefault(x => x.Id == UserId);
-            Instructor teacher = _db.Instructors
-            .Include(t => t.User)
-            .Include(t => t.Classes)
-            .FirstOrDefault(t => t.UserId == UserId);
+            Instructor teacher = _insSvc.GetLoggedInsById(UserId);
             if(teacher != null)
             {
                 container.LoggedInstructor = teacher;
             }
-            container.AllClasses = new List<Class>(_fitService.GetAll())
+            container.AllClasses = new List<Class>(_fitSvc.GetAll())
             .Where(a => a.ClassDate > DateTime.Now)
             .ToList();
             return View(container);
@@ -66,15 +65,12 @@ namespace FitnessProject.Controllers
             .Include(u => u.MyRSVPs)
             .FirstOrDefault(x => x.Id == UserId);
             // see if user is instructor
-            Instructor teacher = _db.Instructors
-            .Include(t => t.User)
-            .Include(t => t.Classes)
-            .FirstOrDefault(t => t.UserId == UserId);
+            Instructor teacher = _insSvc.GetLoggedInsById(UserId);
             if(teacher != null)
             {
                 container.LoggedInstructor = teacher;
             }
-            container.AllClasses = new List<Class>(_fitService.GetAll());
+            container.AllClasses = new List<Class>(_fitSvc.GetAll());
             return View(container);
         }
 
@@ -85,18 +81,15 @@ namespace FitnessProject.Controllers
             container.LoggedUser = _db.users
             .FirstOrDefault(x => x.Id == UserId);
             // see if user is instructor
-            Instructor teacher = _db.Instructors
-            .Include(t => t.User)
-            .Include(t => t.Classes)
-            .FirstOrDefault(t => t.UserId == UserId);
+            Instructor teacher = _insSvc.GetLoggedInsById(UserId);
             if(teacher != null)
             {
                 container.LoggedInstructor = teacher;
             }
-            container.AllClasses = new List<Class>(_fitService.GetAll())
+            container.AllClasses = new List<Class>(_fitSvc.GetAll())
             .Where(a => a.Attending.Any(a => a.UserId == UserId) && a.ClassDate > DateTime.Now)
             .ToList();
-            container.PastClasses = new List<Class>(_fitService.GetAll())
+            container.PastClasses = new List<Class>(_fitSvc.GetAll())
             .Where(a => a.Attending.Any(a => a.UserId == UserId) && a.ClassDate < DateTime.Now)
             .ToList();
             return View(container);
@@ -108,10 +101,7 @@ namespace FitnessProject.Controllers
         {
             container.LoggedUser = _db.users
             .FirstOrDefault(x => x.Id == UserId);
-            container.Instructor = _db.Instructors
-            .Include(i => i.User)
-            .Include(c => c.Classes)
-            .FirstOrDefault(i => i.InstructorId == insId);
+            container.Instructor = _insSvc.GetById(insId);
             return View(container);
         }
 
@@ -119,9 +109,7 @@ namespace FitnessProject.Controllers
         [Authorize(Roles = "Instructor, Admin")]
         public IActionResult EditInstructorProfile(int id)
         {
-            Instructor teacher = _db.Instructors.FirstOrDefault(t => t.InstructorId == id);
-            Container container = new Container();
-            container.LoggedInstructor = teacher;
+            container.LoggedInstructor = _insSvc.GetLoggedInsById(UserId);
             return View(container);
         }
 
@@ -138,8 +126,8 @@ namespace FitnessProject.Controllers
         public IActionResult EditClass(int classId)
         {
             container.LoggedUser = _db.users.FirstOrDefault(x => x.Id == UserId);
-            container.LoggedInstructor = _db.Instructors.FirstOrDefault(t => t.UserId == UserId);
-            container.Class = _fitService.GetById(classId);
+            container.LoggedInstructor = _insSvc.GetLoggedInsById(UserId);
+            container.Class = _fitSvc.GetById(classId);
             return View(container);
         }
 
@@ -156,9 +144,9 @@ namespace FitnessProject.Controllers
             if (ModelState.IsValid)
             {
                 // all is good
-                Instructor teacher = _db.Instructors.FirstOrDefault(t => t.UserId == UserId);
+                Instructor teacher = _insSvc.GetLoggedInsById(UserId);
                 Console.WriteLine($"Instructor ID: {teacher.InstructorId}");
-                _fitService.Create(fromForm.Class, teacher.InstructorId);
+                _fitSvc.Create(fromForm.Class, teacher.InstructorId);
                 return RedirectToAction("Dashboard", "Fitness");
             }
             User u = _db.users.FirstOrDefault(u => u.Id == UserId);
@@ -178,13 +166,13 @@ namespace FitnessProject.Controllers
             }
             if (ModelState.IsValid)
             {
-                Class updatedClass = _fitService.Update(fromForm.Class, classId);
+                Class updatedClass = _fitSvc.Update(fromForm.Class, classId);
                 return RedirectToAction("OneClass", "Fitness", classId);
             }
             User u = _db.users.FirstOrDefault(u => u.Id == UserId);
             container.LoggedUser = u;
-            container.LoggedInstructor = _db.Instructors.FirstOrDefault(t => t.UserId == UserId);
-            container.Class = _fitService.GetById(classId);
+            container.LoggedInstructor = _insSvc.GetLoggedInsById(UserId);
+            container.Class = _fitSvc.GetById(classId);
             return View("EditClass", container);
         }
 
@@ -192,12 +180,7 @@ namespace FitnessProject.Controllers
         [Authorize(Roles = "Instructor, Admin")]
         public IActionResult ProcessInstructor(Container fromForm, int id)
         {
-            Instructor teacher = _db.Instructors.FirstOrDefault(t => t.InstructorId == id);
-            teacher.InstructorPhoto = fromForm.LoggedInstructor.InstructorPhoto;
-            teacher.Expertise = fromForm.LoggedInstructor.Expertise;
-            teacher.Biography = fromForm.LoggedInstructor.Biography;
-            _db.SaveChanges();
-            Console.WriteLine("successfully updated");
+            _insSvc.Update(fromForm.LoggedInstructor, id);
             return RedirectToAction("Profile", "Fitness");
         }
 
@@ -206,9 +189,9 @@ namespace FitnessProject.Controllers
         public IActionResult OneClass(int classId)
         {
             container.LoggedUser = _db.users.FirstOrDefault(x => x.Id == UserId);
-            container.LoggedInstructor = _db.Instructors.FirstOrDefault(t => t.UserId == UserId);
-            container.Class = _fitService.GetById(classId);
-            container.AllRSVPs = new List<RSVP>(_fitService.GetAllRSVPs(classId));
+            container.LoggedInstructor = _insSvc.GetLoggedInsById(UserId);
+            container.Class = _fitSvc.GetById(classId);
+            container.AllRSVPs = new List<RSVP>(_fitSvc.GetAllRSVPs(classId));
             return View(container);
         }
 
@@ -216,10 +199,10 @@ namespace FitnessProject.Controllers
         [Authorize(Roles = "Student, Instructor, Admin")]
         public IActionResult DeleteClass(int classId)
         {
-            Instructor teacher = _db.Instructors.FirstOrDefault(t => t.UserId == UserId);
+            Instructor teacher = _insSvc.GetLoggedInsById(UserId);
             if(teacher != null)
             {
-                _fitService.Delete(classId, teacher.InstructorId);
+                _fitSvc.Delete(classId, teacher.InstructorId);
             }
             return RedirectToAction("Dashboard", "Fitness");
         }
@@ -228,7 +211,7 @@ namespace FitnessProject.Controllers
         [Authorize(Roles = "Student, Instructor, Admin")]
         public IActionResult RSVP(int classId)
         {
-            _fitService.RSVP(UserId, classId);
+            _fitSvc.RSVP(UserId, classId);
             return RedirectToAction("OneClass", "Fitness", classId);
         }
 
@@ -236,7 +219,7 @@ namespace FitnessProject.Controllers
         [Authorize(Roles = "Student, Instructor, Admin")]
         public IActionResult UnRSVP(int classId)
         {
-            _fitService.UnRSVP(UserId, classId);
+            _fitSvc.UnRSVP(UserId, classId);
             return RedirectToAction("Dashboard", "Fitness");
         }
     }
