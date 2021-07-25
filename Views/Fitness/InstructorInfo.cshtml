@@ -1,6 +1,7 @@
 @model Container
 @{
     Instructor instructor = Model.Instructor;
+    List<Class> classes = instructor.Classes.OrderBy(d => d.ClassDate).ThenBy(t => t.StartTime).ToList();
 }
 
 <div class="div-class-photo">
@@ -21,7 +22,7 @@
                 <th>Start Time</th>
                 <th>End Time</th>
             </thead>
-            @foreach (var fitclass in instructor.Classes)
+            @foreach (var fitclass in classes)
             {
                 <tr>
                     <td><a asp-action="OneClass" asp-controller="Fitness" asp-route-classId="@fitclass.ClassId"

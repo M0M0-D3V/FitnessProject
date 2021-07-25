@@ -6,6 +6,7 @@
 <div class="div-class-photo">
     <img src="~/img/hero/@image" alt="backgroundphoto">
 </div>
+<h3>All Upcoming Classes</h3>
 <table class="table table-striped table-light">
     <thead>
         <th>Class Name</th>
@@ -81,3 +82,20 @@
 {
     <a asp-action="NewClass" asp-controller="Fitness" class="btn btn-sm btn-success">New Class</a>
 }
+<hr>
+<h3>Check out our Instructors:</h3>
+<div class="d-flex flex-wrap">
+@{
+    foreach(var ins in @Model.AllInstructors)
+    {
+        <div class="card">
+            <div class="card-body" border border-2">
+                <h5><a asp-action="InstructorInfo" asp-controller="Fitness" asp-route-insId="@ins.InstructorId" data-toggle="tooltip" data-placement="top"
+                title="see more info about this instructor">@ins.User.FirstName @ins.User.LastName</a></h5>
+                <p>Expertise: @ins.Expertise</p>
+            </div>
+        </div>
+    }
+}
+</div>
+</table>

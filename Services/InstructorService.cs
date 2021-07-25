@@ -8,7 +8,7 @@ namespace FitnessProject.Services
 {
     public interface IInstructorService
     {
-        Instructor Create(Instructor fitclass, int tId);
+        Instructor Create(string uId);
         IEnumerable<Instructor> GetAll();
         Instructor GetById(int id);
         Instructor GetLoggedInsById(string uId);
@@ -23,9 +23,14 @@ namespace FitnessProject.Services
         {
             _db = db;
         }
-        public Instructor Create(Instructor fitclass, int tId)
+        public Instructor Create(string uId)
         {
-            return fitclass;
+            Instructor newTeacher = new Instructor();
+            newTeacher.UserId = uId;
+            _db.Instructors.Add(newTeacher);
+            _db.SaveChanges();
+            Console.WriteLine($"Successfully created {newTeacher.User.FirstName}");
+            return newTeacher;
         }
         public IEnumerable<Instructor> GetAll()
         {

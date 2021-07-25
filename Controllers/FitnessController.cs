@@ -54,6 +54,7 @@ namespace FitnessProject.Controllers
             container.AllClasses = new List<Class>(_fitSvc.GetAll())
             .Where(a => a.ClassDate > DateTime.Now)
             .ToList();
+            container.AllInstructors = new List<Instructor>(_insSvc.GetAll()).ToList();
             return View(container);
         }
 
