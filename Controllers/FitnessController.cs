@@ -103,6 +103,11 @@ namespace FitnessProject.Controllers
             container.LoggedUser = _db.users
             .FirstOrDefault(x => x.Id == UserId);
             container.Instructor = _insSvc.GetById(insId);
+            Instructor teacher = _insSvc.GetLoggedInsById(UserId);
+            if(teacher != null)
+            {
+                container.LoggedInstructor = teacher;
+            }
             return View(container);
         }
 
@@ -119,6 +124,7 @@ namespace FitnessProject.Controllers
         public IActionResult NewClass()
         {
             container.LoggedUser = _db.users.FirstOrDefault(x => x.Id == UserId);
+            container.LoggedInstructor = _insSvc.GetLoggedInsById(UserId);
             return View(container);
         }
 
@@ -136,7 +142,6 @@ namespace FitnessProject.Controllers
         [Authorize(Roles = "Instructor, Admin")]
         public IActionResult ProcessClass(Container fromForm)
         {
-            // check wedding date if in future
             Console.WriteLine(fromForm.Class.ClassDate);
             if (fromForm.Class.ClassDate < DateTime.Now)
             {
@@ -144,7 +149,6 @@ namespace FitnessProject.Controllers
             }
             if (ModelState.IsValid)
             {
-                // all is good
                 Instructor teacher = _insSvc.GetLoggedInsById(UserId);
                 Console.WriteLine($"Instructor ID: {teacher.InstructorId}");
                 _fitSvc.Create(fromForm.Class, teacher.InstructorId);
@@ -152,7 +156,7 @@ namespace FitnessProject.Controllers
             }
             User u = _db.users.FirstOrDefault(u => u.Id == UserId);
             fromForm.LoggedUser = u;
-            // show a view with a form
+            fromForm.LoggedInstructor = _insSvc.GetLoggedInsById(UserId);
             return View("NewClass", fromForm);
         }
 
