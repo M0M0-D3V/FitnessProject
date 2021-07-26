@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace FitnessProject.Migrations
 {
-    public partial class Restart : Migration
+    public partial class StartOver : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -161,6 +161,7 @@ namespace FitnessProject.Migrations
                 {
                     InstructorId = table.Column<int>(nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    InstructorPhoto = table.Column<string>(nullable: true),
                     Expertise = table.Column<string>(nullable: true),
                     Biography = table.Column<string>(nullable: true),
                     UserId = table.Column<string>(nullable: true)
@@ -190,6 +191,7 @@ namespace FitnessProject.Migrations
                     Location = table.Column<string>(nullable: false),
                     ClassSize = table.Column<int>(nullable: false),
                     ClassPhoto = table.Column<string>(nullable: false),
+                    ClassVideo = table.Column<string>(nullable: true),
                     CreatedAt = table.Column<DateTime>(nullable: false),
                     UpdatedAt = table.Column<DateTime>(nullable: false),
                     InstructorId = table.Column<int>(nullable: false)
