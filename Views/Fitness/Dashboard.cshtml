@@ -83,11 +83,13 @@
     <a asp-action="NewClass" asp-controller="Fitness" class="btn btn-sm btn-success">New Class</a>
 }
 <hr>
-<h3>Check out our Instructors:</h3>
+<h3>Popular Instructors:</h3>
 <div class="d-flex flex-wrap">
 @{
     foreach(var ins in @Model.AllInstructors)
     {
+        if(ins.Classes.Any(c => c.ClassDate < DateTime.Now))
+        {
         <div class="card">
             <div class="card-body" border border-2">
                 <h5><a asp-action="InstructorInfo" asp-controller="Fitness" asp-route-insId="@ins.InstructorId" data-toggle="tooltip" data-placement="top"
@@ -95,6 +97,7 @@
                 <p>Expertise: @ins.Expertise</p>
             </div>
         </div>
+        }
     }
 }
 </div>

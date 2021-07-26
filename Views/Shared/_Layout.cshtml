@@ -28,14 +28,14 @@
                                 <li class="nav-item">
                                 @if(User.IsInRole("Instructor"))
                                 {
-                                    <a class="nav-link text-dark fw-bold me-5">Welcome, Instructor @User.Identity.Name</a>
+                                    <a class="nav-link text-dark fw-bold me-5">Welcome, Instructor @Model.LoggedInstructor.User.FirstName</a>
                                 }
                                 else if(User.IsInRole("Admin"))
                                 {
                                     <a class="nav-link text-dark fw-bold me-5">Welcome, Admin @User.Identity.Name</a>
                                 }
                                 else{
-                                <a class="nav-link text-dark fw-bold me-5">Welcome, @User.Identity.Name</a>
+                                <a class="nav-link text-dark fw-bold me-5">Welcome, @Model.LoggedUser.FirstName</a>
                                 }
                                 </li>
                                 <li class="nav-item">

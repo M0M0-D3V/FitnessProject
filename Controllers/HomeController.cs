@@ -20,8 +20,9 @@ namespace FitnessProject.Controllers
         private readonly SignInManager<User> _signInManager;
         private MyContext _db;
         private IInstructorService _insSvc;
-        private string UserId{
-            get { return _userManager.GetUserId(User);}
+        private string UserId
+        {
+            get { return _userManager.GetUserId(User); }
         }
         public HomeController(MyContext context, UserManager<User> userManager, SignInManager<User> signInManager, RoleManager<IdentityRole> roleMgr, IInstructorService insSvc)
         {
@@ -75,7 +76,6 @@ namespace FitnessProject.Controllers
             ViewBag.Count = 0;
             return View();
         }
-
         [HttpPost("UserLogin")]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -84,7 +84,7 @@ namespace FitnessProject.Controllers
             if (ModelState.IsValid)
             {
                 var user = await _userManager.FindByEmailAsync(email: model.LoginEmail);
-                if (user != null && await _userManager.CheckPasswordAsync(user, password: model.LoginPassword))
+                if (user != null && await _userManager.CheckPasswordAsync(user, password: model.LoginPassword) && await _userManager.IsInRoleAsync(user, "User"))
                 {
                     await _signInManager.SignInAsync(user, false);
                     return RedirectToLocal(returnUrl);
@@ -97,7 +97,6 @@ namespace FitnessProject.Controllers
             ViewBag.ReturnUrl = returnUrl;
             return View("Signin");
         }
-
         [HttpPost("InstructorLogin")]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -106,7 +105,7 @@ namespace FitnessProject.Controllers
             if (ModelState.IsValid)
             {
                 var user = await _userManager.FindByEmailAsync(email: model.LoginEmail);
-                if (user != null && await _userManager.CheckPasswordAsync(user, password: model.LoginPassword))
+                if (user != null && await _userManager.CheckPasswordAsync(user, password: model.LoginPassword) && await _userManager.IsInRoleAsync(user, "Instructor"))
                 {
                     await _signInManager.SignInAsync(user, false);
                     return RedirectToLocal(returnUrl);
@@ -119,7 +118,6 @@ namespace FitnessProject.Controllers
             ViewBag.ReturnUrl = returnUrl;
             return View("InstructorSignin");
         }
-
         [HttpPost("UserRegister")]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -129,27 +127,18 @@ namespace FitnessProject.Controllers
             if (ModelState.IsValid)
             {
                 var roleExist = await _roleManager.RoleExistsAsync("Student");
-                // If a Role doesn't already exist, create it
                 if(!roleExist)
                 {
                     IdentityResult roleResult = await _roleManager.CreateAsync(new IdentityRole("Student"));
                 }
-                //Create a new User object, without adding a Password
-                User NewUser = new User { UserName = model.FirstName, Email = model.Email, FirstName = model.FirstName, LastName = model.LastName };
-                //CreateAsync will attempt to create the User in the database, simultaneously hashing the
-                //password
+                User NewUser = new User { UserName = model.Email, Email = model.Email, FirstName = model.FirstName, LastName = model.LastName };
                 IdentityResult result = await _userManager.CreateAsync(NewUser, model.Password);
-                //If the User was added to the database successfully
                 if (result.Succeeded)
                 {
-                    // Each new user is added to the "Level1" Role
                     await _userManager.AddToRoleAsync(NewUser, "Student");
-                    //Sign In the newly created User
-                    //We're using the SignInManager, not the UserManager!
                     await _signInManager.SignInAsync(NewUser, isPersistent: false);
                     return RedirectToLocal(returnUrl);
                 }
-                //If the creation failed, add the errors to the View Model
                 foreach (var error in result.Errors)
                 {
                     ModelState.AddModelError(string.Empty, error.Description.Replace("Username", "Email"));
@@ -160,7 +149,6 @@ namespace FitnessProject.Controllers
             ViewBag.Count = count;
             return View("Signin");
         }
-
         [HttpPost("InstructorRegister")]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -170,29 +158,19 @@ namespace FitnessProject.Controllers
             if (ModelState.IsValid)
             {
                 var roleExist = await _roleManager.RoleExistsAsync("Instructor");
-                // If a Role doesn't already exist, create it
                 if(!roleExist)
                 {
                     IdentityResult roleResult = await _roleManager.CreateAsync(new IdentityRole("Instructor"));
                 }
-
-                //Create a new User object, without adding a Password
-                User NewUser = new User { UserName = model.FirstName, Email = model.Email, FirstName = model.FirstName, LastName = model.LastName };
-                //CreateAsync will attempt to create the User in the database, simultaneously hashing the
-                //password
+                User NewUser = new User { UserName = model.Email, Email = model.Email, FirstName = model.FirstName, LastName = model.LastName };
                 IdentityResult result = await _userManager.CreateAsync(NewUser, model.Password);
-                //If the User was added to the database successfully
                 if (result.Succeeded)
                 {
-                    // Each new user is added to the "Level1" Role
                     await _userManager.AddToRoleAsync(NewUser, "Instructor");
-                    //Sign In the newly created User
-                    //We're using the SignInManager, not the UserManager!
                     await _signInManager.SignInAsync(NewUser, isPersistent: false);
                     _insSvc.Create(NewUser.Id);
                     return RedirectToLocal(returnUrl);
                 }
-                //If the creation failed, add the errors to the View Model
                 foreach (var error in result.Errors)
                 {
                     ModelState.AddModelError(string.Empty, error.Description.Replace("Username", "Email"));
@@ -203,7 +181,6 @@ namespace FitnessProject.Controllers
             ViewBag.Count = count;
             return View("InstructorSignin");
         }
-
         public IActionResult Privacy()
         {
             return View();
