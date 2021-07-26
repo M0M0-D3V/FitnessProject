@@ -84,7 +84,7 @@ namespace FitnessProject.Controllers
             if (ModelState.IsValid)
             {
                 var user = await _userManager.FindByEmailAsync(email: model.LoginEmail);
-                if (user != null && await _userManager.CheckPasswordAsync(user, password: model.LoginPassword) && await _userManager.IsInRoleAsync(user, "User"))
+                if (user != null && await _userManager.CheckPasswordAsync(user, password: model.LoginPassword) && await _userManager.IsInRoleAsync(user, "Student"))
                 {
                     await _signInManager.SignInAsync(user, false);
                     return RedirectToLocal(returnUrl);
