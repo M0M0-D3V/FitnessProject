@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FitnessProject.Migrations
 {
     [DbContext(typeof(MyContext))]
-    [Migration("20210721134322_Restart")]
-    partial class Restart
+    [Migration("20210726164630_StartOver")]
+    partial class StartOver
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -42,6 +42,9 @@ namespace FitnessProject.Migrations
 
                     b.Property<int>("ClassSize")
                         .HasColumnType("int");
+
+                    b.Property<string>("ClassVideo")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime(6)");
@@ -79,6 +82,9 @@ namespace FitnessProject.Migrations
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<string>("Expertise")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<string>("InstructorPhoto")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<string>("UserId")
