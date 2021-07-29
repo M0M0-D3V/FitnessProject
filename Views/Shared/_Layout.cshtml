@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@model Container
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -19,11 +20,46 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Fitness" asp-action="Dashboard">Home</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
+                        @{
+                            if (User.Identity.IsAuthenticated)
+                            {
+                                <li class="nav-item">
+                                @if(User.IsInRole("Instructor"))
+                                {
+                                    <a class="nav-link text-dark fw-bold me-5">Welcome, Instructor @Model.LoggedInstructor.User.FirstName</a>
+                                }
+                                else if(User.IsInRole("Admin"))
+                                {
+                                    <a class="nav-link text-dark fw-bold me-5">Welcome, Admin @User.Identity.Name</a>
+                                }
+                                else{
+                                <a class="nav-link text-dark fw-bold me-5">Welcome, @Model.LoggedUser.FirstName</a>
+                                }
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark fw-bold me-5" asp-action="MyClasses" asp-controller="Fitness">MyClasses</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark fw-bold me-5" asp-action="Profile" asp-controller="Fitness">MyProfile</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark fw-bold me-5" asp-action="Logout" asp-controller="Home">Logout</a>
+                                </li>
+                            }
+                            else
+                            {
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Signin</a>
+                                        <div class="dropdown-menu">
+                                            <a class="dropdown-item text-dark fw-bold me-5" asp-area="" asp-controller="Home" asp-action="Signin">Student</a>
+                                            <a class="dropdown-item text-dark fw-bold me-5" asp-area="" asp-controller="Home" asp-action="InstructorSignin">Instructor</a>
+                                            <a class="dropdown-item text-dark fw-bold me-5" asp-area="" asp-controller="Home" asp-action="AdminSignin">Admin</a>
+                                        </div>
+                                </li>
+                            }
+                        }
                     </ul>
                 </div>
             </div>

@@ -1,37 +1,104 @@
 @model Container
-<div class="row">
-    <h1>Welcome @Model.LoggedUser.FirstName</h1>
-    <a asp-action="LogOut" asp-controller="Home">LogOut</a>
+
+@{
+    string image = Model.GetImage("hero");
+}
+<div class="div-class-photo">
+    <img src="~/img/hero/@image" alt="backgroundphoto">
 </div>
-<div class="container">
-    <table class="table table-striped table-light">
-        <thead>
-            <th>Class Name</th>
-            <th>Instructor</th>
-            <th>Date</th>
-            <th>Start Time</th>
-            <th>End Time</th>
-            <th># Of Attending</th>
-            <th>Max Spots</th>
-            <th>Action</th>
-        </thead>
-        @* loop here later *@
-        @foreach (var fitclass in Model.AllClasses)
+<h3>All Upcoming Classes</h3>
+<table class="table table-striped table-light">
+    <thead>
+        <th>Class Name</th>
+        <th>Instructor</th>
+        <th>Date</th>
+        <th>Start Time</th>
+        <th>End Time</th>
+        <th># Of Attending</th>
+        <th>Max Spots</th>
+        <th>Action</th>
+    </thead>
+    @* loop here later *@
+    @foreach (var fitclass in Model.AllClasses)
+    {
+        <tr>
+            <td><a asp-action="OneClass" asp-controller="Fitness" asp-route-classId="@fitclass.ClassId"
+                data-toggle="tooltip" data-placement="top"
+                title="see more info about this class">@fitclass.ClassName</a></td>
+            <td><a asp-action="InstructorInfo" asp-controller="Fitness" asp-route-insId="@fitclass.InstructorId" data-toggle="tooltip" data-placement="top"
+                title="see more info about this instructor">@fitclass.Instructor.User.FirstName</a></td>
+            <td>@fitclass.ClassDate.ToString("m")</td>
+            <td>@fitclass.StartTime.ToString("t")</td>
+            <td>@fitclass.EndTime.ToString("t")</td>
+            <td>@fitclass.Attending.Count</td>
+            <td>@fitclass.ClassSize</td>
+            <td>
+                @{
+                    if (User.IsInRole("Instructor"))
+                    {
+                        int myInsId = Model.LoggedInstructor.InstructorId;
+                        if (fitclass.InstructorId == myInsId)
+                        {
+                            <a asp-action="EditClass" asp-controller="Fitness" asp-route-classId="@fitclass.ClassId"
+                class="btn btn-sm btn-warning">Edit Class</a>
+                            <a asp-action="DeleteClass" asp-controller="Fitness" asp-route-classId="@fitclass.ClassId"
+                class="btn btn-sm btn-danger">Delete</a>
+                        }
+                    }
+                    if (fitclass.Instructor.User.Id != Model.LoggedUser.Id)
+                    {
+                        if (@fitclass.Attending != null)
+                        {
+                            if (@fitclass.Attending.Any(a => a.UserId == Model.LoggedUser.Id))
+                            {
+                                <a asp-action="UnRSVP" asp-controller="Fitness" asp-route-classId="@fitclass.ClassId"><button
+                        class="btn btn-sm btn-warning">Leave</button></a>
+                            }
+                            else if (@fitclass.Attending.Count < @fitclass.ClassSize)
+                            {
+                                <a asp-action="RSVP" asp-controller="Fitness" asp-route-classId="@fitclass.ClassId"><button
+                        class="btn btn-sm btn-primary">Join</button></a>
+                            }
+                            else
+                            {
+                                <button class="btn btn-sm btn-secondary" disabled data-toggle="tooltip" data-placement="top"
+                title="This class has reached maximum capacity. Please try another class">Join</button>
+                            }
+                        }
+                        else
+                        {
+                            <a asp-action="RSVP" asp-controller="Fitness" asp-route-classId="@Model.Class.ClassId"><button
+                                class="btn btn-sm btn-primary">Join</button></a>
+                        }
+                    }
+                }
+            </td>
+        </tr>
+    }
+    <tr>
+</table>
+<hr>
+@if (User.IsInRole("Instructor"))
+{
+    <a asp-action="NewClass" asp-controller="Fitness" class="btn btn-sm btn-success">New Class</a>
+}
+<hr>
+<h3>Popular Instructors:</h3>
+<div class="d-flex flex-wrap">
+@{
+    foreach(var ins in @Model.AllInstructors)
+    {
+        if(ins.Classes.Any(c => c.ClassDate < DateTime.Now))
         {
-            <tr>
-                <td><a asp-action="OneClass" asp-controller="Fitness"
-                    asp-route-classId="@fitclass.ClassId">@fitclass.ClassName</a></td>
-                <td>@fitclass.Instructor.FirstName</td>
-                <td>@fitclass.ClassDate.ToString("m")</td>
-                <td>@fitclass.StartTime.ToString("t")</td>
-                <td>@fitclass.EndTime.ToString("t")</td>
-                <td>@fitclass.Attending.Count</td>
-                <td>@fitclass.ClassSize</td>
-                <td>buttons</td>
-            </tr>
+        <div class="card">
+            <div class="card-body" border border-2">
+                <h5><a asp-action="InstructorInfo" asp-controller="Fitness" asp-route-insId="@ins.InstructorId" data-toggle="tooltip" data-placement="top"
+                title="see more info about this instructor">@ins.User.FirstName @ins.User.LastName</a></h5>
+                <p>Expertise: @ins.Expertise</p>
+            </div>
+        </div>
         }
-        <tr>>
-    </table>
-    <hr>
-    <a asp-action="NewClass" asp-controller="Fitness" class="btn btn-sm">New Class</a>
+    }
+}
 </div>
+</table>

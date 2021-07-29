@@ -1,0 +1,28 @@
+@model LoginViewModel
+
+<div class="card">
+    <div class="card-body border border-2">
+        <h3 class="card-title mb-3">Login Admin</h3>
+
+        <form asp-action="Login" asp-controller="Home" method="POST">
+
+            <div class="col mb-3">
+                <label class="form-label" asp-for="LoginEmail"></label>
+                <input class="form-control" asp-for="LoginEmail">
+                <span class="text-danger" asp-validation-for="LoginEmail"></span>
+            </div>
+
+            <div class="col mb-3">
+                <label class="form-label" asp-for="LoginPassword"></label>
+                <input class="form-control" asp-for="LoginPassword">
+                <span class="text-danger" asp-validation-for="LoginPassword"></span>
+            </div>
+
+            <div class="col text-end">
+                <input value="Login" type="submit" class="btn btn-primary">
+            </div>
+
+        </form>
+
+    </div>
+</div>
