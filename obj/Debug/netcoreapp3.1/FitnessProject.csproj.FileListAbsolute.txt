@@ -153,3 +153,5 @@ C:\Users\mimi_\Documents\Projects\FitnessProject\obj\Debug\netcoreapp3.1\Razor\V
 C:\Users\mimi_\Documents\Projects\FitnessProject\bin\Debug\netcoreapp3.1\MailKit.dll
 C:\Users\mimi_\Documents\Projects\FitnessProject\bin\Debug\netcoreapp3.1\MimeKit.dll
 C:\Users\mimi_\Documents\Projects\FitnessProject\bin\Debug\netcoreapp3.1\BouncyCastle.Crypto.dll
+C:\Users\mimi_\Documents\Projects\FitnessProject\bin\Debug\netcoreapp3.1\appsettings.Development.json
+C:\Users\mimi_\Documents\Projects\FitnessProject\bin\Debug\netcoreapp3.1\appsettings.json
