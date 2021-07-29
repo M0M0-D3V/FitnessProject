@@ -44,6 +44,9 @@ namespace FitnessProject
                     options.AccessDeniedPath = new PathString("/Signin");
                 });
 
+            services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));
+            services.AddTransient<IMailService, Services.MailService>();
+
             services.AddMvc(options => options.EnableEndpointRouting = false);
             services.AddAuthentication();
 
