@@ -20,17 +20,19 @@ namespace FitnessProject.Controllers
         private readonly SignInManager<User> _signInManager;
         private MyContext _db;
         private IInstructorService _insSvc;
+        private readonly IMailService _mailSvc; 
         private string UserId
         {
             get { return _userManager.GetUserId(User); }
         }
-        public HomeController(MyContext context, UserManager<User> userManager, SignInManager<User> signInManager, RoleManager<IdentityRole> roleMgr, IInstructorService insSvc)
+        public HomeController(MyContext context, UserManager<User> userManager, SignInManager<User> signInManager, RoleManager<IdentityRole> roleMgr, IInstructorService insSvc, IMailService ms)
         {
             _db = context;
             _userManager = userManager;
             _signInManager = signInManager;
             _roleManager = roleMgr;
             _insSvc = insSvc;
+            _mailSvc = ms;
         }
 
         private Task<User> GetCurrentUserAsync()
@@ -137,6 +139,10 @@ namespace FitnessProject.Controllers
                 {
                     await _userManager.AddToRoleAsync(NewUser, "Student");
                     await _signInManager.SignInAsync(NewUser, isPersistent: false);
+                    WelcomeRequest request = new WelcomeRequest();
+                    request.ToEmail = model.Email;
+                    request.UserName = model.FirstName + " " + model.LastName;
+                    await _mailSvc.SendWelcomeEmailAsync(request);
                     return RedirectToLocal(returnUrl);
                 }
                 foreach (var error in result.Errors)
@@ -169,6 +175,10 @@ namespace FitnessProject.Controllers
                     await _userManager.AddToRoleAsync(NewUser, "Instructor");
                     await _signInManager.SignInAsync(NewUser, isPersistent: false);
                     _insSvc.Create(NewUser.Id);
+                     WelcomeRequest request = new WelcomeRequest();
+                    request.ToEmail = model.Email;
+                    request.UserName = model.FirstName + " " + model.LastName;
+                    await _mailSvc.SendWelcomeEmailAsync(request);
                     return RedirectToLocal(returnUrl);
                 }
                 foreach (var error in result.Errors)
