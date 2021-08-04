@@ -19,7 +19,7 @@
         <th>Action</th>
     </thead>
     @* loop here later *@
-    @foreach (var fitclass in Model.AllClasses)
+    @foreach (var fitclass in Model.PaginatedClasses())
     {
         <tr>
             <td><a asp-action="OneClass" asp-controller="Fitness" asp-route-classId="@fitclass.ClassId"
@@ -77,6 +77,14 @@
     }
     <tr>
 </table>
+<ul class="pagination pagination-sm justify-content-end">
+    @for(int i = 1; i <= Model.PageCount(); i++)
+    {
+        <li class="@(i == Model.CurrentPage ? "page-item active" : "page-item")">
+            <a class="page-link" href="@Url.Action("Dashboard", "Fitness", new { page = i })">@i</a>
+        </li>
+    }
+</ul>
 <hr>
 @if (User.IsInRole("Instructor"))
 {

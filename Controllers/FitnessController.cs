@@ -43,7 +43,7 @@ namespace FitnessProject.Controllers
 
         [HttpGet("dashboard")]
         [Authorize(Roles = "Student, Instructor, Admin")]
-        public IActionResult Dashboard()
+        public IActionResult Dashboard(int page = 1)
         {
             container.LoggedUser = _db.users.FirstOrDefault(x => x.Id == UserId);
             Instructor teacher = _insSvc.GetLoggedInsById(UserId);
@@ -55,6 +55,8 @@ namespace FitnessProject.Controllers
             .Where(a => a.ClassDate > DateTime.Now)
             .ToList();
             container.AllInstructors = new List<Instructor>(_insSvc.GetAll()).ToList();
+            container.ClassesPerPage = 5;
+            container.CurrentPage = page;
             return View(container);
         }
 
@@ -93,6 +95,21 @@ namespace FitnessProject.Controllers
             container.PastClasses = new List<Class>(_fitSvc.GetAll())
             .Where(a => a.Attending.Any(a => a.UserId == UserId) && a.ClassDate < DateTime.Now)
             .ToList();
+            return View(container);
+        }
+
+        [HttpGet("instructor/all")]
+        [Authorize(Roles = "Student, Instructor, Admin")]
+        public IActionResult AllInstructors()
+        {
+            container.LoggedUser = _db.users
+            .FirstOrDefault(x => x.Id == UserId);
+            Instructor teacher = _insSvc.GetLoggedInsById(UserId);
+            if(teacher != null)
+            {
+                container.LoggedInstructor = teacher;
+            }
+            container.AllInstructors = _insSvc.GetAll().ToList();
             return View(container);
         }
 
