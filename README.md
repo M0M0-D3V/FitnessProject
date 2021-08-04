@@ -1,6 +1,6 @@
 # Features
 ---
-- 
+- LIVE ON AWS: http://18.235.255.18/
 ---
 ## General User
 ### - P0
@@ -11,6 +11,7 @@
 - [x] MyClasses shows list of past classes 
 - [x] view Instructor detail page with info and classes
 ### - P1
+- [x] receive Welcome Email
 - [] Watch or Favorite a class or instructor
 - [] Profile shows all the classes and instructors they favorited
 - [] send messages to other Users and Instructors
@@ -23,7 +24,6 @@
 - [] look here for calendar stuff: https://fullcalendar.io/docs/Calendar-render
 - [] get notification when there are new messages
 ### - P3
-- [] receive Emails
 
 ---
 ## Instructor Level
@@ -37,6 +37,7 @@
 - [] past classes are archived
 - [x] can link youtube video of classes
 ### - P1
+- [x] receive Welcome Email
 - [] can create class playlist
 ---
 ### Admin Level

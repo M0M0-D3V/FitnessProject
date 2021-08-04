@@ -17,6 +17,8 @@ namespace FitnessProject.Models
         public List<Class> AllClasses { get; set; }
         public List<Class> PastClasses { get; set; }
         public List<RSVP> AllRSVPs { get; set; }
+        public int ClassesPerPage { get; set; }
+        public int CurrentPage { get; set; }
 
         private int RandNum(int min, int max)
         {
@@ -45,6 +47,15 @@ namespace FitnessProject.Models
                 }
             }
             return newList[RandNum(0, newList.Count)];
+        }
+        public int PageCount()
+        {
+            return Convert.ToInt32(Math.Ceiling(AllClasses.Count() / (double)ClassesPerPage));
+        }
+        public List<Class> PaginatedClasses()
+        {
+            int start = (CurrentPage - 1) * ClassesPerPage;
+            return AllClasses.OrderBy(b => b.ClassDate).Skip(start).Take(ClassesPerPage).ToList();
         }
     }
 }
