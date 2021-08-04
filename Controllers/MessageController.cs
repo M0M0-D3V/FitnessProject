@@ -49,5 +49,21 @@ namespace FitnessProject.Controllers
             container.ReceivedMessages = _msgSvc.GetAllReceived(UserId).ToList();
             return View(container);
         }
+        [HttpGet("inbox/compose")]
+        [Authorize(Roles = "Student, Instructor, Admin")]
+        public IActionResult Compose()
+        {
+            container.LoggedUser = _db.users.FirstOrDefault(x => x.Id == UserId);
+            Instructor teacher = _insSvc.GetLoggedInsById(UserId);
+            if(teacher != null)
+            {
+                container.LoggedInstructor = teacher;
+            }
+            container.AllUsers = _db.users.ToList();
+            container.AllInstructors = _insSvc.GetAll().ToList();
+            container.SentMessages = _msgSvc.GetAllSent(UserId).ToList();
+            container.ReceivedMessages = _msgSvc.GetAllReceived(UserId).ToList();
+            return View(container);
+        }
     }
 }

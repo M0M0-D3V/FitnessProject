@@ -34,8 +34,6 @@ namespace FitnessProject.Services
         {
             IEnumerable<Message> sentMessages = _db.Messages
             .Where(u => u.MessageFromId == uId)
-            // .Include(i => i.Title)
-            // .Include(i => i.Content)
             .Include(u => u.UserMessaged)
             .Include(u => u.MessageFrom);
             return sentMessages;
@@ -44,8 +42,6 @@ namespace FitnessProject.Services
         {
             IEnumerable<Message> receivedMessages = _db.Messages
             .Where(u => u.UserMessagedId == uId)
-            // .Include(i => i.Title)
-            // .Include(i => i.Content)
             .Include(u => u.MessageFrom)
             .Include(u => u.UserMessaged);
             return receivedMessages;

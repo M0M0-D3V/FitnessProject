@@ -19,6 +19,7 @@ namespace FitnessProject.Models
         public List<RSVP> AllRSVPs { get; set; }
         public int ClassesPerPage { get; set; }
         public int CurrentPage { get; set; }
+        public Message Message { get; set; }
         public List<Message> ReceivedMessages { get; set; }
         public List<Message> SentMessages { get; set; }
 
