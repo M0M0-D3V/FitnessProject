@@ -98,6 +98,21 @@ namespace FitnessProject.Controllers
             return View(container);
         }
 
+        [HttpGet("instructor/all")]
+        [Authorize(Roles = "Student, Instructor, Admin")]
+        public IActionResult AllInstructors()
+        {
+            container.LoggedUser = _db.users
+            .FirstOrDefault(x => x.Id == UserId);
+            Instructor teacher = _insSvc.GetLoggedInsById(UserId);
+            if(teacher != null)
+            {
+                container.LoggedInstructor = teacher;
+            }
+            container.AllInstructors = _insSvc.GetAll().ToList();
+            return View(container);
+        }
+
         [HttpGet("instructor/{insId}")]
         [Authorize(Roles = "Student, Instructor, Admin")]
         public IActionResult InstructorInfo(int insId)

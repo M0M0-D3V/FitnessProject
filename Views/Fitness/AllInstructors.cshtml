@@ -1,0 +1,23 @@
+@model Container
+@{
+    string image = Model.GetImage("hero");
+}
+<div class="div-class-photo">
+    <img src="~/img/hero/@image" alt="backgroundphoto">
+</div>
+<h3>Meet Our Instructors</h3>
+<div class="d-flex flex-wrap">
+@{
+    foreach(var ins in @Model.AllInstructors)
+    {
+        <div class="card col-md-6">
+            <img class="card-img-top" src="@ins.InstructorPhoto" alt="@ins.User.FirstName">
+            <div class="card-body" border border-2">
+                <h5 class="card-title">@ins.User.FirstName @ins.User.LastName</h5>
+                <p class="card-text">Expertise: @ins.Expertise</p>
+                <a asp-action="InstructorInfo" asp-controller="Fitness" asp-route-insId="@ins.InstructorId" data-toggle="tooltip" data-placement="top" title="View classes from @ins.User.FirstName" class="btn btn-sm btn-primary">View Classes</a>
+            </div>
+        </div>
+    }
+}
+</div>
