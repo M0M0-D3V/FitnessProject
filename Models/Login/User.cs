@@ -23,6 +23,9 @@ namespace FitnessProject.Models
         {
             // Classes = new List<Class>();
             MyRSVPs = new List<RSVP>();
+            MyReviews = new List<Review>();
+            MyMessages = new List<Message>();
+            UsersMessaged = new List<Message>();
         }
     }
 }
