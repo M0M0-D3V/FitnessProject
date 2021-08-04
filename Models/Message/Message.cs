@@ -7,8 +7,8 @@ namespace FitnessProject.Models
     {
         [Key]
         public int MessageId { get; set; }
-        public string MyMessageId { get; set; }
-        public User MyMessage { get; set; }
+        public string MessageFromId { get; set; }
+        public User MessageFrom { get; set; }
         public string UserMessagedId { get; set; }
         public User UserMessaged { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.Now;

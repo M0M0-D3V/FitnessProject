@@ -15,16 +15,16 @@ namespace FitnessProject.Models
         public List<Review> MyReviews { get; set; }
 
         [InverseProperty("UserMessaged")]
-        public List<Message> MyMessages { get; set; }
+        public List<Message> MessagesFrom { get; set; }
 
-        [InverseProperty("MyMessage")]
+        [InverseProperty("MessageFrom")]
         public List<Message> UsersMessaged { get; set; }
         public User()
         {
             // Classes = new List<Class>();
             MyRSVPs = new List<RSVP>();
             MyReviews = new List<Review>();
-            MyMessages = new List<Message>();
+            MessagesFrom = new List<Message>();
             UsersMessaged = new List<Message>();
         }
     }

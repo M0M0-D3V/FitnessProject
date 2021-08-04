@@ -3,14 +3,16 @@ using System;
 using FitnessProject.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace FitnessProject.Migrations
 {
     [DbContext(typeof(MyContext))]
-    partial class MyContextModelSnapshot : ModelSnapshot
+    [Migration("20210804124535_Messages")]
+    partial class Messages
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -104,7 +106,7 @@ namespace FitnessProject.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<string>("MessageFromId")
+                    b.Property<string>("MyMessageId")
                         .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
 
                     b.Property<DateTime>("UpdatedAt")
@@ -115,7 +117,7 @@ namespace FitnessProject.Migrations
 
                     b.HasKey("MessageId");
 
-                    b.HasIndex("MessageFromId");
+                    b.HasIndex("MyMessageId");
 
                     b.HasIndex("UserMessagedId");
 
@@ -394,12 +396,12 @@ namespace FitnessProject.Migrations
 
             modelBuilder.Entity("FitnessProject.Models.Message", b =>
                 {
-                    b.HasOne("FitnessProject.Models.User", "MessageFrom")
+                    b.HasOne("FitnessProject.Models.User", "MyMessage")
                         .WithMany("UsersMessaged")
-                        .HasForeignKey("MessageFromId");
+                        .HasForeignKey("MyMessageId");
 
                     b.HasOne("FitnessProject.Models.User", "UserMessaged")
-                        .WithMany("MessagesFrom")
+                        .WithMany("MyMessages")
                         .HasForeignKey("UserMessagedId");
                 });
 
