@@ -32,7 +32,7 @@
             class="btn btn-sm btn-danger">Delete</a>
                 }
             }
-            if(Model.Class.Instructor.User.Id != Model.LoggedUser.Id)
+            if(Model.Class.Instructor.User.Id != Model.LoggedUser.Id && Model.Class.ClassDate > DateTime.Now)
             {
                 if (@Model.Class.Attending != null)
                 {
