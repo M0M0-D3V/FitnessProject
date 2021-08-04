@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 namespace FitnessProject.Models
@@ -11,6 +12,13 @@ namespace FitnessProject.Models
         public string LastName { get; set; }
         // public List<Class> Classes { get; set; }
         public List<RSVP> MyRSVPs { get; set; }
+        public List<Review> MyReviews { get; set; }
+
+        [InverseProperty("UserMessaged")]
+        public List<Message> MyMessages { get; set; }
+
+        [InverseProperty("MyMessage")]
+        public List<Message> UsersMessaged { get; set; }
         public User()
         {
             // Classes = new List<Class>();
