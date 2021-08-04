@@ -17,18 +17,20 @@ namespace FitnessProject.Controllers
         private readonly SignInManager<User> _signInManager;
         private IFitnessService _fitSvc;
         private IInstructorService _insSvc;
+        private IMessageService _msgSvc;
         Container container;
         private string UserId{
             get { return _userManager.GetUserId(User);}
         }
         // here we can "inject" our context service into the constructor
-        public MessageController(MyContext context, UserManager<User> userManager, SignInManager<User> signInManager, IFitnessService fitService, IInstructorService insSvc)
+        public MessageController(MyContext context, UserManager<User> userManager, SignInManager<User> signInManager, IFitnessService fitService, IInstructorService insSvc, IMessageService msgSvc)
         {
             _db = context;
             _userManager = userManager;
             _signInManager = signInManager;
             _fitSvc = fitService;
             _insSvc = insSvc;
+            _msgSvc = msgSvc;
             container = new Container();
         }
         [HttpGet("inbox")]
@@ -42,10 +44,9 @@ namespace FitnessProject.Controllers
                 container.LoggedInstructor = teacher;
             }
             container.AllUsers = _db.users.ToList();
-            container.AllInstructors = new List<Instructor>(_insSvc.GetAll()).ToList();
-            // [] need svc lists for messages
-            // container.ReceivedMessages
-            // container.SentMessages
+            container.AllInstructors = _insSvc.GetAll().ToList();
+            container.SentMessages = _msgSvc.GetAllSent(UserId).ToList();
+            container.ReceivedMessages = _msgSvc.GetAllReceived(UserId).ToList();
             return View(container);
         }
     }

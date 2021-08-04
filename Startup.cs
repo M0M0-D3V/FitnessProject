@@ -52,6 +52,7 @@ namespace FitnessProject
 
             services.AddScoped<IFitnessService, FitnessService>();
             services.AddScoped<IInstructorService, InstructorService>();
+            services.AddScoped<IMessageService, MessageService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
