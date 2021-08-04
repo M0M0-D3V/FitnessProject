@@ -11,5 +11,7 @@ namespace FitnessProject.Models
         public DbSet<Instructor> Instructors { get; set; }
         public DbSet<Class> Classes { get; set; }
         public DbSet<RSVP> RSVPs { get; set; }
+        public DbSet<Message> Messages {get; set; }
+        public DbSet<Review> Reviews { get; set; }
     }
 }

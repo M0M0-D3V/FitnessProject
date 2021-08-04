@@ -156,3 +156,4 @@ C:\Users\mimi_\Documents\Projects\FitnessProject\bin\Debug\netcoreapp3.1\BouncyC
 C:\Users\mimi_\Documents\Projects\FitnessProject\bin\Debug\netcoreapp3.1\appsettings.Development.json
 C:\Users\mimi_\Documents\Projects\FitnessProject\bin\Debug\netcoreapp3.1\appsettings.json
 C:\Users\mimi_\Documents\Projects\FitnessProject\obj\Debug\netcoreapp3.1\Razor\Views\Fitness\AllInstructors.cshtml.g.cs
+C:\Users\mimi_\Documents\Projects\FitnessProject\obj\Debug\netcoreapp3.1\Razor\Views\Message\Inbox.cshtml.g.cs
