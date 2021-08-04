@@ -14,7 +14,10 @@
     <div class="col-md-8">
         <h5>Full Name: @instructor.User.FirstName @instructor.User.LastName</h5>
         <h5>Expertise: @instructor.Expertise</h5>
-        <h5>Biography: @instructor.Biography</h5>
+        <blockquote class="blockquote mb-0">
+            <h5>Biography:</h5>
+            <p>@instructor.Biography</p>
+        </blockquote>
 
         <h3>Upcoming Classes:</h3>
         <table class="table table-striped table-light">
