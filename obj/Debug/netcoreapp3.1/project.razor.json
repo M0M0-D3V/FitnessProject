@@ -14472,6 +14472,11 @@
       "FileKind": "mvc"
     },
     {
+      "FilePath": "c:\\Users\\mimi_\\Documents\\Projects\\FitnessProject\\Views\\Message\\Compose.cshtml",
+      "TargetPath": "Views\\Message\\Compose.cshtml",
+      "FileKind": "mvc"
+    },
+    {
       "FilePath": "c:\\Users\\mimi_\\Documents\\Projects\\FitnessProject\\Views\\Home\\_Login.cshtml",
       "TargetPath": "Views\\Home\\_Login.cshtml",
       "FileKind": "mvc"

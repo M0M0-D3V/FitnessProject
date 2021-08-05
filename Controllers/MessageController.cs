@@ -59,11 +59,33 @@ namespace FitnessProject.Controllers
             {
                 container.LoggedInstructor = teacher;
             }
-            container.AllUsers = _db.users.ToList();
+            container.AllUsers = _db.users.Where(u => u.Id != UserId).ToList();
             container.AllInstructors = _insSvc.GetAll().ToList();
             container.SentMessages = _msgSvc.GetAllSent(UserId).ToList();
             container.ReceivedMessages = _msgSvc.GetAllReceived(UserId).ToList();
             return View(container);
+        }
+        [HttpPost("inbox/send")]
+        [Authorize(Roles = "Student, Instructor, Admin")]
+        public IActionResult SendMessage(Container fromForm)
+        {
+
+            if (ModelState.IsValid)
+            {
+                _msgSvc.SendMessage(fromForm.Message, UserId);
+                return RedirectToAction("Inbox", "Message");
+            }
+            container.LoggedUser = _db.users.FirstOrDefault(x => x.Id == UserId);
+            Instructor teacher = _insSvc.GetLoggedInsById(UserId);
+            if(teacher != null)
+            {
+                container.LoggedInstructor = teacher;
+            }
+            container.AllUsers = _db.users.Where(u => u.Id != UserId).ToList();
+            container.AllInstructors = _insSvc.GetAll().ToList();
+            container.SentMessages = _msgSvc.GetAllSent(UserId).ToList();
+            container.ReceivedMessages = _msgSvc.GetAllReceived(UserId).ToList();
+            return View("Compose");
         }
     }
 }

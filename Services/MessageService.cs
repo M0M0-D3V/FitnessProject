@@ -8,7 +8,7 @@ namespace FitnessProject.Services
 {
     public interface IMessageService
     {
-        Message SendMessage(Message message, string sId, string rId);
+        Message SendMessage(Message message, string sId);
         IEnumerable<Message> GetAllSent(string uId);
         IEnumerable<Message> GetAllReceived(string uId);
         
@@ -21,13 +21,13 @@ namespace FitnessProject.Services
         {
             _db = db;
         }
-        public Message SendMessage(Message message, string sId, string rId)
+        public Message SendMessage(Message message, string sId)
         {
             message.MessageFromId = sId;
-            message.UserMessagedId = rId;
+            // message.UserMessagedId = rId;
             _db.Messages.Add(message);
             _db.SaveChanges();
-            Console.WriteLine($"successfully sent message to {message.UserMessaged.FirstName}");
+            Console.WriteLine($"successfully sent message");
             return message;
         }
         public IEnumerable<Message> GetAllSent(string uId)
