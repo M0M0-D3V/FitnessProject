@@ -35,14 +35,13 @@ namespace FitnessProject.Services
         }
         public IEnumerable<Class> GetAll()
         {
-            List<Class> allClasses = _db.Classes
+            IEnumerable<Class> allClasses = _db.Classes
             .Include(c => c.Instructor)
             .ThenInclude(i => i.User)
             .Include(c => c.Attending)
             .ThenInclude(a => a.Attendee)
             .OrderBy(o => o.ClassDate)
-            .ThenBy(o => o.StartTime)
-            .ToList();
+            .ThenBy(o => o.StartTime);
             return allClasses;
         }
         public Class GetById(int id)
@@ -96,13 +95,11 @@ namespace FitnessProject.Services
         }
         public IEnumerable<RSVP> GetAllRSVPs(int cId)
         {
-            List<RSVP> allRSVPs = new List<RSVP>();
-            allRSVPs = _db.RSVPs
+            IEnumerable<RSVP> allRSVPs = _db.RSVPs
             .Where(r => r.ClassId == cId)
             .Include(r => r.Attendee)
             .Include(e => e.Attending)
-            .ThenInclude(u => u.Instructor)
-            .ToList();
+            .ThenInclude(u => u.Instructor);
             return allRSVPs;
         }
     }

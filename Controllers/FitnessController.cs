@@ -51,10 +51,10 @@ namespace FitnessProject.Controllers
             {
                 container.LoggedInstructor = teacher;
             }
-            container.AllClasses = new List<Class>(_fitSvc.GetAll())
+            container.AllClasses = _fitSvc.GetAll()
             .Where(a => a.ClassDate > DateTime.Now)
             .ToList();
-            container.AllInstructors = new List<Instructor>(_insSvc.GetAll()).ToList();
+            container.AllInstructors = _insSvc.GetAll().ToList();
             container.ClassesPerPage = 5;
             container.CurrentPage = page;
             return View(container);
@@ -73,7 +73,7 @@ namespace FitnessProject.Controllers
             {
                 container.LoggedInstructor = teacher;
             }
-            container.AllClasses = new List<Class>(_fitSvc.GetAll());
+            container.AllClasses = _fitSvc.GetAll().ToList();
             return View(container);
         }
 
@@ -89,10 +89,10 @@ namespace FitnessProject.Controllers
             {
                 container.LoggedInstructor = teacher;
             }
-            container.AllClasses = new List<Class>(_fitSvc.GetAll())
+            container.AllClasses = _fitSvc.GetAll()
             .Where(a => a.Attending.Any(a => a.UserId == UserId) && a.ClassDate > DateTime.Now)
             .ToList();
-            container.PastClasses = new List<Class>(_fitSvc.GetAll())
+            container.PastClasses = _fitSvc.GetAll()
             .Where(a => a.Attending.Any(a => a.UserId == UserId) && a.ClassDate < DateTime.Now)
             .ToList();
             return View(container);
@@ -213,7 +213,7 @@ namespace FitnessProject.Controllers
             container.LoggedUser = _db.users.FirstOrDefault(x => x.Id == UserId);
             container.LoggedInstructor = _insSvc.GetLoggedInsById(UserId);
             container.Class = _fitSvc.GetById(classId);
-            container.AllRSVPs = new List<RSVP>(_fitSvc.GetAllRSVPs(classId));
+            container.AllRSVPs = _fitSvc.GetAllRSVPs(classId).ToList();
             return View(container);
         }
 

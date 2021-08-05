@@ -34,12 +34,11 @@ namespace FitnessProject.Services
         }
         public IEnumerable<Instructor> GetAll()
         {
-            List<Instructor> allInstructors = _db.Instructors
+            IEnumerable<Instructor> allInstructors = _db.Instructors
             .Include(i => i.User)
             .Include(i => i.Classes)
             .ThenInclude(i => i.Attending)
-            .OrderBy(n => n.User.FirstName)
-            .ToList();
+            .OrderBy(n => n.User.FirstName);
             return allInstructors;
         }
         public Instructor GetById(int id)

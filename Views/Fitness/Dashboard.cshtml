@@ -99,7 +99,7 @@
         if(ins.Classes.Any(c => c.ClassDate < DateTime.Now))
         {
         <div class="card">
-            <div class="card-body" border border-2">
+            <div class="card-body border border-2">
                 <h5><a asp-action="InstructorInfo" asp-controller="Fitness" asp-route-insId="@ins.InstructorId" data-toggle="tooltip" data-placement="top"
                 title="see more info about this instructor">@ins.User.FirstName @ins.User.LastName</a></h5>
                 <p>Expertise: @ins.Expertise</p>

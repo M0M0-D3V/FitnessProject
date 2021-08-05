@@ -55,5 +55,6 @@ namespace FitnessProject.Models
         public Instructor Instructor { get; set; }
         // many to many
         public List<RSVP> Attending { get; set; }
+        public List<Review> Reviews { get; set; }
     }
 }

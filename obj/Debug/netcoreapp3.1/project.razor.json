@@ -14457,6 +14457,11 @@
       "FileKind": "mvc"
     },
     {
+      "FilePath": "c:\\Users\\mimi_\\Documents\\Projects\\FitnessProject\\Views\\Message\\Inbox.cshtml",
+      "TargetPath": "Views\\Message\\Inbox.cshtml",
+      "FileKind": "mvc"
+    },
+    {
       "FilePath": "c:\\Users\\mimi_\\Documents\\Projects\\FitnessProject\\Views\\Fitness\\AllInstructors.cshtml",
       "TargetPath": "Views\\Fitness\\AllInstructors.cshtml",
       "FileKind": "mvc"
@@ -14464,6 +14469,11 @@
     {
       "FilePath": "c:\\Users\\mimi_\\Documents\\Projects\\FitnessProject\\Views\\Home\\Privacy.cshtml",
       "TargetPath": "Views\\Home\\Privacy.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "c:\\Users\\mimi_\\Documents\\Projects\\FitnessProject\\Views\\Message\\Compose.cshtml",
+      "TargetPath": "Views\\Message\\Compose.cshtml",
       "FileKind": "mvc"
     },
     {

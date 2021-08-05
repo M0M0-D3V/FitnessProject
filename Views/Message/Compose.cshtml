@@ -1,0 +1,28 @@
+@model Container
+@{
+    string image = Model.GetImage("hero");
+}
+<div class="div-class-photo">
+    <img src="~/img/hero/@image" alt="backgroundphoto">
+</div>
+<h3>Compose New Message</h3>
+<form asp-action="SendMessage" asp-controller="Message" method="POST">
+    <div class="col-md-6">
+        <label class="form-label" asp-for="@Model.Message.UserMessagedId"></label>
+        <select class="form-control" asp-for="@Model.Message.UserMessagedId">
+            <option selected="true" disabled="disabled">Choose...</option>  
+            @foreach(var u in Model.AllUsers)
+            {
+                <option value="@u.Id">@u.FirstName @u.LastName</option>
+            }
+        </select><br>
+        <span class="text-danger" asp-validation-for="@Model.Message.UserMessagedId"></span>
+        <label class="form-label" asp-for="@Model.Message.Title"></label>
+        <input class="form-control" asp-for="@Model.Message.Title"><br>
+        <span class="text-danger" asp-validation-for="@Model.Message.Title"></span>
+        <label class="form-label" asp-for="@Model.Message.Content"></label>
+        <input class="form-control" asp-for="@Model.Message.Content"><br>
+        <span class="text-danger" asp-validation-for="@Model.Message.Content"></span>
+    </div>
+    <button type="submit" class="btn btn-sm btn-primary">Send</button>
+</form>
