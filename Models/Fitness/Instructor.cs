@@ -17,5 +17,7 @@ namespace FitnessProject.Models
         public string UserId { get; set; }
         public User User { get; set; }
         public List<Class> Classes { get; set; }
+        public List<ReviewInstructor> ReviewedByUsers { get; set; }
+        public List<FavoriteInstructor> FavoritedByUsers { get; set; }
     }
 }
