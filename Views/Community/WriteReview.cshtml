@@ -1,0 +1,40 @@
+@model Container
+
+<div class="row">
+    <div class="col-md-12 div-class-photo"><img src="@Model.Class.ClassPhoto" alt="@Model.Class.ClassName"></div>
+</div>
+
+<div class="row">
+    @{
+        if(Model.Class.Attending.Any(a => a.Attendee.Id == Model.LoggedUser.Id))
+        {
+            <div class="col-md-6">
+                <h3>Write A Review About This Class</h3>
+                <form asp-action="ProcessReview" asp-controller="Community" asp-route-cId="@Model.Class.ClassId" method="POST">
+                    <label class="form-label" asp-for="@Model.ReviewClass.Rating"></label>
+                    <select class="form-control" asp-for="@Model.ReviewClass.Rating">
+                        <option selected="true" disabled="disabled">Choose...</option>  
+                        @for(int i = 1; i <= 5; i++)
+                        {
+                            <option value="@i">@i</option>
+                        }
+                    </select>
+                    <span class="text-danger" asp-validation-for="@Model.ReviewClass.Rating"></span><br>
+                    <label class="form-label" asp-for="@Model.ReviewClass.Title"></label>
+                    <input class="form-control" asp-for="@Model.ReviewClass.Title">
+                    <span class="text-danger" asp-validation-for="@Model.ReviewClass.Title"></span><br>
+                    <label class="form-label" asp-for="@Model.ReviewClass.Content"></label>
+                    <input class="form-control" asp-for="@Model.ReviewClass.Content">
+                    <span class="text-danger" asp-validation-for="@Model.ReviewClass.Content"></span><br>
+                    <button type="submit" class="btn btn-sm btn-primary">Submit</button>
+                </form>
+            </div>
+        }
+    }
+    <div class="col-md-6">
+        <h3>@Model.Class.ClassName</h3>
+        <h5>Instructor: @Model.Class.Instructor.User.FirstName @Model.Class.Instructor.User.LastName</h5>
+        <h6>Class Date: @Model.Class.ClassDate.ToString("MMMM dd yyy")</h6>
+        <p>@Model.Class.ClassDescription</p>
+    </div>
+</div>

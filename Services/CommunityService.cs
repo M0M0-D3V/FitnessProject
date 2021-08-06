@@ -8,7 +8,7 @@ namespace FitnessProject.Services
 {
     public interface ICommunityService
     {
-        ReviewClass CreateClassReview(ReviewClass review, string uId);
+        ReviewClass CreateClassReview(ReviewClass review, string uId, int cId);
         IEnumerable<ReviewClass> GetAllClassReviews();
         IEnumerable<ReviewClass> GetAllReviewsOneClass(int cId);
         ReviewInstructor CreateInstructorReview(ReviewInstructor review, string uId);
@@ -28,8 +28,13 @@ namespace FitnessProject.Services
         {
             _db = db;
         }
-        public ReviewClass CreateClassReview(ReviewClass review, string uId)
+        public ReviewClass CreateClassReview(ReviewClass review, string uId, int cId)
         {
+            review.ClassId = cId;
+            review.UserId = uId;
+            _db.ReviewClasses.Add(review);
+            _db.SaveChanges();
+            Console.WriteLine($"Successfully created new review for class");
             return review;
         }
         public IEnumerable<ReviewClass> GetAllClassReviews()

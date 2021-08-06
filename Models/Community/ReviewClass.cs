@@ -10,8 +10,9 @@ namespace FitnessProject.Models
         [Required(ErrorMessage = "Review needs a title")]
         public string Title { get; set; }
         
-        [Required(ErrorMessage = "Review needs a content")]
+        [Required(ErrorMessage = "Review needs a body")]
         public string Content { get; set; }
+        [Required(ErrorMessage = "Review needs a rating")]
         public int Rating { get; set; }
         public string UserId { get; set; }
         public User Reviewer { get; set; }

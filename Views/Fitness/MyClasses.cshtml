@@ -61,7 +61,7 @@
                     <td>@fitclass.ClassDate.ToString("m")</td>
                     <td>@fitclass.StartTime.ToString("t")</td>
                     <td>@fitclass.EndTime.ToString("t")</td>
-                    <td>placeholder
+                    <td><a asp-action="WriteReview" asp-controller="Community" asp-route-cId="@fitclass.ClassId" class="btn btn-sm btn-secondary">Write A Review</a>
                     </td>
                 </tr>
             }

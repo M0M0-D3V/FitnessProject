@@ -22,6 +22,7 @@ namespace FitnessProject.Models
         public Message Message { get; set; }
         public List<Message> ReceivedMessages { get; set; }
         public List<Message> SentMessages { get; set; }
+        public ReviewClass ReviewClass { get; set; }
 
         private int RandNum(int min, int max)
         {
