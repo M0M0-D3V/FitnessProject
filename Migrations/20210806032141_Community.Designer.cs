@@ -3,14 +3,16 @@ using System;
 using FitnessProject.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace FitnessProject.Migrations
 {
     [DbContext(typeof(MyContext))]
-    partial class MyContextModelSnapshot : ModelSnapshot
+    [Migration("20210806032141_Community")]
+    partial class Community
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -164,7 +166,10 @@ namespace FitnessProject.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int>("ReviewClassId")
+                    b.Property<int?>("LikedClassReviewReviewClassId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ReviewId")
                         .HasColumnType("int");
 
                     b.Property<string>("UserId")
@@ -172,7 +177,7 @@ namespace FitnessProject.Migrations
 
                     b.HasKey("LikeReviewId");
 
-                    b.HasIndex("ReviewClassId");
+                    b.HasIndex("LikedClassReviewReviewClassId");
 
                     b.HasIndex("UserId");
 
@@ -576,9 +581,7 @@ namespace FitnessProject.Migrations
                 {
                     b.HasOne("FitnessProject.Models.ReviewClass", "LikedClassReview")
                         .WithMany()
-                        .HasForeignKey("ReviewClassId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("LikedClassReviewReviewClassId");
 
                     b.HasOne("FitnessProject.Models.User", "LikedBy")
                         .WithMany("MyLikedReviews")

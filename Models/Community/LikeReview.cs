@@ -8,7 +8,7 @@ namespace FitnessProject.Models
         public int LikeReviewId { get; set; }
         public string UserId { get; set; }
         public User LikedBy { get; set; }
-        public int ReviewId { get; set; }
+        public int ReviewClassId { get; set; }
         public ReviewClass LikedClassReview { get; set; }
     }
 }

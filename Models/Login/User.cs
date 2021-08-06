@@ -30,6 +30,10 @@ namespace FitnessProject.Models
             MyRSVPs = new List<RSVP>();
             MyReviews = new List<ReviewClass>();
             MyInstructorReviews = new List<ReviewInstructor>();
+            MyLikedClasses = new List<LikeClass>();
+            MyLikedReviews = new List<LikeReview>();
+            MyFavoriteClasses = new List<FavoriteClass>();
+            MyFavoriteInstructors = new List<FavoriteInstructor>();
             MessagesFrom = new List<Message>();
             UsersMessaged = new List<Message>();
         }
