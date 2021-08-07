@@ -12,7 +12,12 @@ namespace FitnessProject.Models
         public string LastName { get; set; }
         // public List<Class> Classes { get; set; }
         public List<RSVP> MyRSVPs { get; set; }
-        public List<Review> MyReviews { get; set; }
+        public List<ReviewClass> MyReviews { get; set; }
+        public List<ReviewInstructor> MyInstructorReviews { get; set; }
+        public List<LikeClass> MyLikedClasses { get; set; }
+        public List<LikeReview> MyLikedReviews { get; set; }
+        public List<FavoriteClass> MyFavoriteClasses { get; set; }
+        public List<FavoriteInstructor> MyFavoriteInstructors { get; set; }
 
         [InverseProperty("UserMessaged")]
         public List<Message> MessagesFrom { get; set; }
@@ -23,7 +28,12 @@ namespace FitnessProject.Models
         {
             // Classes = new List<Class>();
             MyRSVPs = new List<RSVP>();
-            MyReviews = new List<Review>();
+            MyReviews = new List<ReviewClass>();
+            MyInstructorReviews = new List<ReviewInstructor>();
+            MyLikedClasses = new List<LikeClass>();
+            MyLikedReviews = new List<LikeReview>();
+            MyFavoriteClasses = new List<FavoriteClass>();
+            MyFavoriteInstructors = new List<FavoriteInstructor>();
             MessagesFrom = new List<Message>();
             UsersMessaged = new List<Message>();
         }

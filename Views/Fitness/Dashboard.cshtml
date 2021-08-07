@@ -51,13 +51,11 @@
                         {
                             if (@fitclass.Attending.Any(a => a.UserId == Model.LoggedUser.Id))
                             {
-                                <a asp-action="UnRSVP" asp-controller="Fitness" asp-route-classId="@fitclass.ClassId"><button
-                        class="btn btn-sm btn-warning">Leave</button></a>
+                                <a asp-action="UnRSVP" asp-controller="Fitness" asp-route-classId="@fitclass.ClassId" class="btn btn-sm btn-warning">Leave</a>
                             }
                             else if (@fitclass.Attending.Count < @fitclass.ClassSize)
                             {
-                                <a asp-action="RSVP" asp-controller="Fitness" asp-route-classId="@fitclass.ClassId"><button
-                        class="btn btn-sm btn-primary">Join</button></a>
+                                <a asp-action="RSVP" asp-controller="Fitness" asp-route-classId="@fitclass.ClassId" class="btn btn-sm btn-primary">Join</a>
                             }
                             else
                             {
@@ -67,8 +65,7 @@
                         }
                         else
                         {
-                            <a asp-action="RSVP" asp-controller="Fitness" asp-route-classId="@Model.Class.ClassId"><button
-                                class="btn btn-sm btn-primary">Join</button></a>
+                            <a asp-action="RSVP" asp-controller="Fitness" asp-route-classId="@Model.Class.ClassId" class="btn btn-sm btn-primary">Join</a>
                         }
                     }
                 }

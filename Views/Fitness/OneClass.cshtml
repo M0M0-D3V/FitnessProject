@@ -32,19 +32,19 @@
             class="btn btn-sm btn-danger">Delete</a>
                 }
             }
-            if(Model.Class.Instructor.User.Id != Model.LoggedUser.Id && Model.Class.ClassDate > DateTime.Now)
+            if (Model.Class.Instructor.User.Id != Model.LoggedUser.Id && Model.Class.ClassDate > DateTime.Now)
             {
                 if (@Model.Class.Attending != null)
                 {
                     if (@Model.Class.Attending.Any(a => a.UserId == Model.LoggedUser.Id))
                     {
                         <a asp-action="UnRSVP" asp-controller="Fitness" asp-route-classId="@Model.Class.ClassId"><button
-                        class="btn btn-sm btn-warning">Leave</button></a>
+                    class="btn btn-sm btn-warning">Leave</button></a>
                     }
-                    else if(@Model.Class.Attending.Count < @Model.Class.ClassSize)
+                    else if (@Model.Class.Attending.Count < @Model.Class.ClassSize)
                     {
                         <a asp-action="RSVP" asp-controller="Fitness" asp-route-classId="@Model.Class.ClassId"><button
-                            class="btn btn-sm btn-primary">Join</button></a>
+                    class="btn btn-sm btn-primary">Join</button></a>
                     }
                     else
                     {
@@ -55,13 +55,43 @@
                 else
                 {
                     <a asp-action="RSVP" asp-controller="Fitness" asp-route-classId="@Model.Class.ClassId"><button
-                        class="btn btn-sm btn-primary">Join</button></a>
+                    class="btn btn-sm btn-primary">Join</button></a>
                 }
             }
         }
     </div>
-    <div class="col-md-6 youtube-video-container">
-        <iframe width="560" height="315" src="@Model.Class.ClassVideo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    <div class="youtube-video-container">
+        <iframe width="560" height="315" src="@Model.Class.ClassVideo" title="YouTube video player" frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen></iframe>
     </div>
-    
+
 </div>
+@{
+    if (Model.AllClassReviews.Count > 0)
+    {
+        <div class="row">
+            <div class="accordion accordion-flush" id="accordionFlushExample">
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="flush-headingOne">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                            See Reviews ... @Model.AllClassReviews[0].Title ...
+                        </button>
+                    </h2>
+                    <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne"
+                    data-bs-parent="#accordionFlushExample">
+                        <div class="accordion-body">
+                            @foreach (var review in Model.AllClassReviews)
+                            {
+                                <h5>Rating: @review.Rating / 5</h5>
+                                <strong>@review.Title - by @review.Reviewer.FirstName @review.Reviewer.LastName</strong>
+                                <p>@review.Content</p>
+                            }
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+}

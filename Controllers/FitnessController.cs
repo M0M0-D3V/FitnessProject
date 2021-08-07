@@ -19,18 +19,20 @@ namespace FitnessProject.Controllers
         private readonly SignInManager<User> _signInManager;
         private IFitnessService _fitSvc;
         private IInstructorService _insSvc;
+        private ICommunityService _commSvc;
         Container container;
         private string UserId{
             get { return _userManager.GetUserId(User);}
         }
         // here we can "inject" our context service into the constructor
-        public FitnessController(MyContext context, UserManager<User> userManager, SignInManager<User> signInManager, IFitnessService fitService, IInstructorService insSvc)
+        public FitnessController(MyContext context, UserManager<User> userManager, SignInManager<User> signInManager, IFitnessService fitService, IInstructorService insSvc, ICommunityService commSvc)
         {
             _db = context;
             _userManager = userManager;
             _signInManager = signInManager;
             _fitSvc = fitService;
             _insSvc = insSvc;
+            _commSvc = commSvc;
             container = new Container();
         }
         
@@ -214,6 +216,7 @@ namespace FitnessProject.Controllers
             container.LoggedInstructor = _insSvc.GetLoggedInsById(UserId);
             container.Class = _fitSvc.GetById(classId);
             container.AllRSVPs = _fitSvc.GetAllRSVPs(classId).ToList();
+            container.AllClassReviews = _commSvc.GetAllReviewsOneClass(classId).ToList();
             return View(container);
         }
 

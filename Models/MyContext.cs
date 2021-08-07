@@ -12,6 +12,11 @@ namespace FitnessProject.Models
         public DbSet<Class> Classes { get; set; }
         public DbSet<RSVP> RSVPs { get; set; }
         public DbSet<Message> Messages {get; set; }
-        public DbSet<Review> Reviews { get; set; }
+        public DbSet<ReviewClass> ReviewClasses { get; set; }
+        public DbSet<ReviewInstructor> ReviewInstructors { get; set; }
+        public DbSet<LikeClass> LikeClasses { get; set; }
+        public DbSet<LikeReview> LikeReviews { get; set; }
+        public DbSet<FavoriteClass> FavoriteClasses { get; set; }
+        public DbSet<FavoriteInstructor> FavoriteInstructors { get; set; }
     }
 }

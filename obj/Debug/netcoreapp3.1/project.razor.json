@@ -14407,6 +14407,11 @@
       "FileKind": "mvc"
     },
     {
+      "FilePath": "c:\\Users\\mimi_\\Documents\\Projects\\FitnessProject\\Views\\Community\\WriteReview.cshtml",
+      "TargetPath": "Views\\Community\\WriteReview.cshtml",
+      "FileKind": "mvc"
+    },
+    {
       "FilePath": "c:\\Users\\mimi_\\Documents\\Projects\\FitnessProject\\Views\\Fitness\\OneClass.cshtml",
       "TargetPath": "Views\\Fitness\\OneClass.cshtml",
       "FileKind": "mvc"

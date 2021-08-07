@@ -158,3 +158,4 @@ C:\Users\mimi_\Documents\Projects\FitnessProject\obj\Debug\netcoreapp3.1\staticw
 C:\Users\mimi_\Documents\Projects\FitnessProject\obj\Debug\netcoreapp3.1\staticwebassets\FitnessProject.StaticWebAssets.xml
 C:\Users\mimi_\Documents\Projects\FitnessProject\obj\Debug\netcoreapp3.1\FitnessProject.genruntimeconfig.cache
 C:\Users\mimi_\Documents\Projects\FitnessProject\obj\Debug\netcoreapp3.1\Razor\Views\Message\Compose.cshtml.g.cs
+C:\Users\mimi_\Documents\Projects\FitnessProject\obj\Debug\netcoreapp3.1\Razor\Views\Community\WriteReview.cshtml.g.cs
