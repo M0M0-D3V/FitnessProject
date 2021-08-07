@@ -52,7 +52,8 @@ namespace FitnessProject.Controllers
             if (ModelState.IsValid)
             {
                 _commSvc.CreateClassReview(fromForm.ReviewClass, UserId, cId);
-                return RedirectToAction("OneClass", "Fitness", cId);
+                // return RedirectToAction("OneClass", "Fitness", cId);
+                return Redirect($"/class/{cId}");
             }
             container.LoggedUser = _db.users.FirstOrDefault(x => x.Id == UserId);
             Instructor teacher = _insSvc.GetLoggedInsById(UserId);
