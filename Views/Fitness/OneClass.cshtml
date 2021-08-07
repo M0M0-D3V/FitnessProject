@@ -1,5 +1,11 @@
 @model Container
-
+@{
+    double avgRating = 0;
+    if(Model.AllClassReviews.Count > 0)
+    {
+        avgRating = Model.AllClassReviews.Sum(i => i.Rating) / Model.AllClassReviews.Count;
+    }
+}
 <div class="row">
     <div class="col-md-12 div-class-photo"><img src="@Model.Class.ClassPhoto" alt="@Model.Class.ClassName"></div>
 </div>
@@ -8,6 +14,14 @@
     <div class="col-md-6">
         <h1>@Model.Class.ClassName with @Model.Class.Instructor.User.FirstName</h1>
         <h5>Class Date: @Model.Class.ClassDate.ToString("MMMM dd yyy")</h5>
+        @if(avgRating > 0)
+        {
+            <h5>Average Rating: @avgRating / 5</h5>
+        }
+        else
+        {
+            <h5>No Reviews Yet</h5>
+        }
         <p>@Model.Class.ClassDescription</p>
         <h5>Guests:</h5>
         <ul>
@@ -81,14 +95,14 @@
                     </h2>
                     <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne"
                     data-bs-parent="#accordionFlushExample">
-                        <div class="accordion-body">
-                            @foreach (var review in Model.AllClassReviews)
-                            {
+                        @foreach (var review in Model.AllClassReviews)
+                        {
+                            <div class="accordion-body">
                                 <h5>Rating: @review.Rating / 5</h5>
                                 <strong>@review.Title - by @review.Reviewer.FirstName @review.Reviewer.LastName</strong>
                                 <p>@review.Content</p>
-                            }
                             </div>
+                        }
                     </div>
                 </div>
             </div>
